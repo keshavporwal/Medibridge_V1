@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Admin Dashboard</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-05 · Wireframe — Institute Admin Dashboard</p>
+    <p class="crumb">Breadcrumb: Home / Command Center</p>
+
+    <!-- Header -->
+    <div class="box between">
+      <strong>MediBridge — Admin</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box">
+      <h1>Clinical Operations Command Center</h1>
+
+      <!-- KPIs -->
+      <div class="grid">
+        <div class="box">KPI: Enrolled clinics</div>
+        <div class="box">KPI: Active facilities</div>
+        <div class="box">KPI: Total staff</div>
+        <div class="box">KPI: Patient volume</div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Patient Volume Trends</h2>
+        <div class="img">Chart: monthly throughput line graph</div>
+      </div>
+      <div class="box">
+        <h2>Enrolled Clinics</h2>
+        <p class="muted small">Card list · link: View all →</p>
+        <ul><li>Clinic row</li><li>Clinic row</li></ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="between"><h2>Staff Governance</h2><span class="btn">Onboard staff</span></div>
+      <div class="table">
+        <div class="muted small">Name · Clinic · Role · Onboarded · Status · [Deboard]</div>
+        <div>Staff row</div>
+        <div>Staff row</div>
+      </div>
+    </div>
+
+    <!-- Popups -->
+    <div class="divider">Popup — Onboard Staff Member</div>
+    <div class="box pop">
+      <div class="field">Full legal name <span class="req">*</span></div>
+      <div class="field">Institutional email <span class="req">*</span></div>
+      <div class="field">Assigned clinic <span class="req">*</span> <span class="muted small">— dropdown</span></div>
+      <div class="field">Role <span class="req">*</span> <span class="muted small">— dropdown (Doctor / Receptionist)</span></div>
+      <p class="muted small">Note: auto-provisions credentials + shows generated info</p>
+      <p><span class="btn">Onboard</span> <span class="btn">Cancel</span></p>
+    </div>
+
+    <div class="divider">Popup — Deboard Staff (confirm)</div>
+    <div class="box pop">
+      <p class="muted">Confirm removal. Reassign open consultations, revoke credentials immediately.</p>
+      <div class="field">Reassign consultations to <span class="muted small">— dropdown</span></div>
+      <p><span class="btn">Confirm deboard</span> <span class="btn">Cancel</span></p>
+    </div>
+  </div>
+</body>
+</html>

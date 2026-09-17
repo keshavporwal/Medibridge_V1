@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Doctor Dashboard</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-07 · Wireframe — Doctor Clinical Dashboard (bento)</p>
+    <p class="crumb">Breadcrumb: Home / Workspace</p>
+
+    <div class="box between">
+      <strong>MediBridge — Doctor</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box">
+      <div class="between"><h1>Good day, Doctor</h1><span><span class="btn">Set availability</span><span class="btn">Request document</span></span></div>
+      <div class="grid">
+        <div class="box">KPI: Today's visits</div>
+        <div class="box">KPI: Next appointment</div>
+        <div class="box">KPI: Pending doc requests</div>
+        <div class="box">KPI: Shared documents</div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Today's Patient Roster</h2>
+        <div class="table">
+          <div class="muted small">Patient · MRN · Visit type · Time · [Open record]</div>
+          <div>Appointment row</div>
+          <div>Appointment row</div>
+        </div>
+      </div>
+      <div class="box">
+        <h2>Today's Schedule</h2>
+        <div class="img">Daily gantt timeline · link: open full schedule</div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Document Request Tracker</h2>
+        <ul><li>Request → patient · status</li></ul>
+      </div>
+      <div class="box">
+        <h2>Shared With You</h2>
+        <ul><li>Shared file · patient · [preview]</li></ul>
+      </div>
+    </div>
+
+    <div class="divider">Popup — Request Clinical Document</div>
+    <div class="box pop">
+      <div class="field">Patient <span class="req">*</span> <span class="muted small">— dropdown</span></div>
+      <div class="field">Instructions / notes <span class="req">*</span> <span class="muted small">(what docs are needed; no vault browsing)</span></div>
+      <p><span class="btn">Send request</span> <span class="btn">Cancel</span></p>
+    </div>
+
+    <div class="divider">Popup — Set Weekly Availability</div>
+    <div class="box pop">
+      <div class="field">Working days <span class="muted small">— checkboxes Mon–Fri</span></div>
+      <div class="field">Shift start / end <span class="req">*</span></div>
+      <div class="field">Lunch / break buffer</div>
+      <p><span class="btn">Save availability</span> <span class="btn">Cancel</span></p>
+    </div>
+  </div>
+</body>
+</html>

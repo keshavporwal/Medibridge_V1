@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Patient Document Vault</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-13 · Wireframe — Patient Document Vault</p>
+    <p class="crumb">Breadcrumb: Home / Health Hub / Vault</p>
+
+    <div class="box between">
+      <strong>MediBridge — Patient</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box"><h1>Document Vault</h1></div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Upload records</h2>
+        <div class="img">Drag &amp; drop upload area · [choose file]</div>
+        <p class="muted small">Files stored locally; preview supported (PDF / image)</p>
+      </div>
+      <div class="box">
+        <h2>My documents</h2>
+        <div class="table"><div class="muted small">File · type · date · [preview] [share]</div><div>Document row</div><div>Document row</div></div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Pending requests</h2>
+        <ul><li>Doctor request · message · [grant access]</li></ul>
+      </div>
+      <div class="box">
+        <h2>Active access</h2>
+        <ul><li>Doctor · files · expiry · [revoke]</li></ul>
+      </div>
+    </div>
+
+    <div class="divider">Popup — Grant Document Access</div>
+    <div class="box pop">
+      <div class="field">Select files <span class="req">*</span> <span class="muted small">— checkboxes</span></div>
+      <div class="field">Access duration <span class="req">*</span> <span class="muted small">— 30 / 90 / Until revoked</span></div>
+      <p><span class="btn">Grant access</span> <span class="btn">Cancel</span></p>
+    </div>
+
+    <div class="divider">Popup — Document Preview (shared component)</div>
+    <div class="box pop">
+      <div class="img">PDF iframe / image preview · download fallback</div>
+    </div>
+  </div>
+</body>
+</html>

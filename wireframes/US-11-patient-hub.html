@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Patient Health Hub</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-11 · Wireframe — Patient Health Hub</p>
+    <p class="crumb">Breadcrumb: Home / Health Hub</p>
+
+    <div class="box between">
+      <strong>MediBridge — Patient</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box">
+      <div class="between"><h1>Welcome back, Patient</h1><span><span class="btn">Request appointment</span><span class="btn">Upload record</span></span></div>
+      <div class="grid">
+        <div class="box">Mini-stat: Upcoming visits</div>
+        <div class="box">Mini-stat: Documents</div>
+        <div class="box">Mini-stat: Active grants</div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Digital Patient ID</h2>
+        <div class="img">QR code + name / MRN</div>
+        <p class="muted small">Link: shareable pass page</p>
+      </div>
+      <div class="box">
+        <h2>Upcoming Visit</h2>
+        <p class="muted small">Next appointment · in-person / telehealth · reschedule</p>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Consent &amp; Permissions</h2>
+        <ul><li>Doctor · files shared · expiry · [revoke]</li></ul>
+      </div>
+      <div class="box">
+        <h2>Document Vault</h2>
+        <p class="muted small">Recent files · link: open vault</p>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>My Appointment Requests</h2>
+      <div class="table"><div class="muted small">Doctor · requested date · status</div><div>Request row</div></div>
+    </div>
+
+    <div class="box">
+      <h2>Care &amp; Consultation Timeline</h2>
+      <div class="img">Gantt: past visits, active care plans, upcoming follow-ups</div>
+    </div>
+
+    <div class="divider">Popup — Request an Appointment</div>
+    <div class="box pop">
+      <div class="field">Doctor <span class="req">*</span> <span class="muted small">— dropdown (must exist)</span></div>
+      <div class="field">Preferred date <span class="req">*</span></div>
+      <div class="field">Reason for visit <span class="req">*</span></div>
+      <p><span class="btn">Submit request</span> <span class="btn">Cancel</span></p>
+    </div>
+
+    <div class="divider">Popup — Grant Document Access</div>
+    <div class="box pop">
+      <p class="muted small">Responds to a doctor's request (shows their message).</p>
+      <div class="field">Select files to share <span class="req">*</span> <span class="muted small">— checkboxes from vault</span></div>
+      <div class="field">Access duration <span class="req">*</span> <span class="muted small">— 30 / 90 days / Until revoked</span></div>
+      <p><span class="btn">Grant access</span> <span class="btn">Cancel</span></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Receptionist Dashboard</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-10 · Wireframe — Receptionist Intake Dashboard</p>
+    <p class="crumb">Breadcrumb: Home / Front Desk</p>
+
+    <div class="box between">
+      <strong>MediBridge — Receptionist</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box">
+      <h1>Intake Command Center</h1>
+      <div class="grid">
+        <div class="box">KPI: Scheduled today</div>
+        <div class="box">KPI: Pending requests</div>
+        <div class="box">KPI: Doctors on duty</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Pending Appointment Requests</h2>
+      <div class="table">
+        <div class="muted small">Patient · Preferred doctor · Requested window · Reason · [Review &amp; schedule]</div>
+        <div>Request row</div>
+        <div>Request row</div>
+      </div>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Doctor Availability</h2>
+        <div class="table"><div class="muted small">Doctor · Status · On-duty hours · Next slot · [View schedule]</div><div>Doctor row</div></div>
+      </div>
+      <div class="box">
+        <h2>Today's Schedule</h2>
+        <ul><li>Booked visit</li><li>Booked visit</li></ul>
+      </div>
+    </div>
+
+    <div class="divider">Popup — Review &amp; Schedule Request</div>
+    <div class="box pop">
+      <div class="row">
+        <div class="box"><h2>Request details</h2><p class="muted small">Patient · reason · preferred window</p></div>
+        <div class="box"><h2>Doctor slots</h2><p class="muted small">Available slots list — pick one</p></div>
+      </div>
+      <div class="field">Assign doctor <span class="req">*</span> <span class="muted small">— dropdown</span></div>
+      <div class="field">Date &amp; time slot <span class="req">*</span></div>
+      <p><span class="btn">Confirm &amp; schedule</span> <span class="btn">Cancel</span></p>
+    </div>
+
+    <div class="divider">Popup — Doctor Schedule</div>
+    <div class="box pop">
+      <p class="muted small">Inspect a clinician's daily timetable to book / reschedule.</p>
+      <div class="img">Doctor daily timetable</div>
+    </div>
+  </div>
+</body>
+</html>

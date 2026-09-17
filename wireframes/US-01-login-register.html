@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Login / Register</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf">
+    <p class="muted">US-01 · Wireframe — Login &amp; Registration (split screen)</p>
+
+    <div class="box row">
+      <!-- Left visual pane -->
+      <div class="img">Image: role-based clinical photo<br />(changes with selected role)</div>
+
+      <!-- Right form pane -->
+      <div class="box">
+        <div class="between">
+          <strong>Sign in</strong>
+          <span class="muted">tabs: Sign in / Create account</span>
+        </div>
+        <p class="muted small">Role picker: Doctor · Patient · Receptionist</p>
+        <div class="field">Email <span class="req">*</span></div>
+        <div class="field">Password <span class="req">*</span></div>
+        <p><span class="btn">Sign in</span></p>
+        <p class="muted small">Link: Forgot password?</p>
+        <p class="muted small">Link: Institute Administrator? Sign in here →</p>
+      </div>
+    </div>
+
+    <div class="divider">Popup / Alt tab — Create account (Step 1)</div>
+    <div class="box pop">
+      <strong>Create account</strong>
+      <p class="muted small">Doctor / Staff enter a Clinic Code (from admin onboarding). Admin cannot self-register.</p>
+      <div class="field">Full name <span class="req">*</span></div>
+      <div class="field">Official email <span class="req">*</span></div>
+      <div class="field">Clinic code <span class="muted">(doctor / staff only)</span></div>
+      <div class="field">Password <span class="req">*</span> <span class="muted small">— strength meter</span></div>
+      <p><span class="btn">Continue → security questions</span></p>
+    </div>
+  </div>
+</body>
+</html>

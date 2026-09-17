@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe — Patient Clinical Chart</title>
+  <link rel="stylesheet" href="assets/wireframe.css" />
+</head>
+<body>
+  <div class="wf wf-wide">
+    <p class="muted">US-09 · Wireframe — Patient Clinical Chart (doctor view)</p>
+    <p class="crumb">Breadcrumb: Home / Workspace / Patients / Patient name</p>
+
+    <div class="box between">
+      <strong>MediBridge — Doctor</strong>
+      <span class="muted small">Profile ▾ · Log out</span>
+    </div>
+
+    <div class="box between">
+      <div><h1>Patient name</h1><p class="muted small">MRN · age · contact</p></div>
+      <span class="btn">Request document</span>
+    </div>
+
+    <div class="box row">
+      <div class="box">
+        <h2>Summary</h2>
+        <p class="muted small">History, allergies / alerts, upcoming visits</p>
+      </div>
+      <div class="box">
+        <h2>Shared Documents 🔒</h2>
+        <p class="muted small">Only files the patient consented to share</p>
+        <ul><li>Shared file · [preview]</li></ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Consultation History</h2>
+      <div class="table"><div>Visit note</div><div>Visit note</div></div>
+    </div>
+
+    <div class="box">
+      <h2>Log Consultation Note</h2>
+      <div class="field">Note <span class="req">*</span> <span class="muted small">— textarea</span></div>
+      <p><span class="btn">Save note</span></p>
+    </div>
+
+    <div class="divider">Popup — Request Clinical Document</div>
+    <div class="box pop">
+      <div class="field">Instructions / notes <span class="req">*</span> <span class="muted small">(no vault browsing)</span></div>
+      <p><span class="btn">Send request</span> <span class="btn">Cancel</span></p>
+    </div>
+  </div>
+</body>
+</html>
