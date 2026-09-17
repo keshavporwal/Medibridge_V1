@@ -35,12 +35,48 @@
   }
 
   /* ---------- Documents -------------------------------------------------- */
+  var vaultSearch = document.getElementById('vault-search');
+  var vaultFilter = document.getElementById('vault-filter');
+  var pageInfo = document.getElementById('vault-page-info');
+  var btnPrev = document.getElementById('vault-btn-prev');
+  var btnNext = document.getElementById('vault-btn-next');
+
+  var currentPage = 1;
+  var pageSize = 5;
+
   function renderDocs() {
-    var docs = Store.where('documents', function (d) { return d.patientId === patientId; });
-    document.getElementById('doc-count').textContent = docs.length + ' file' + (docs.length === 1 ? '' : 's');
+    var term = (vaultSearch ? vaultSearch.value : '').trim().toLowerCase();
+    var filter = vaultFilter ? vaultFilter.value : 'all';
+
+    var allDocs = Store.where('documents', function (d) { return d.patientId === patientId; });
+    document.getElementById('doc-count').textContent = allDocs.length + ' file' + (allDocs.length === 1 ? '' : 's');
+
+    var docs = allDocs.filter(function (d) {
+      var matchesSearch = !term || d.name.toLowerCase().indexOf(term) > -1;
+      var matchesFilter = filter === 'all' || d.type === filter;
+      return matchesSearch && matchesFilter;
+    });
+
+    var totalItems = docs.length;
+    var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    var start = (currentPage - 1) * pageSize;
+    var pagedDocs = docs.slice(start, start + pageSize);
+
+    if (pageInfo) {
+      pageInfo.textContent = totalItems ? 'Showing ' + (start + 1) + '–' + Math.min(start + pageSize, totalItems) + ' of ' + totalItems : 'Showing 0 of 0';
+    }
+    if (btnPrev) btnPrev.disabled = currentPage <= 1;
+    if (btnNext) btnNext.disabled = currentPage >= totalPages;
+
     var body = document.getElementById('docs-body');
-    if (!docs.length) { body.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-outlined">folder_open</span><p>Your vault is empty. Upload a record to get started.</p></div></td></tr>'; return; }
-    body.innerHTML = docs.map(function (d) {
+    if (!pagedDocs.length) {
+      body.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-outlined">folder_open</span><p>' +
+        (term || filter !== 'all' ? 'No documents match your filter.' : 'Your vault is empty. Upload a record to get started.') + '</p></div></td></tr>';
+      return;
+    }
+    body.innerHTML = pagedDocs.map(function (d) {
       return '<tr>' +
         '<td><div class="cell-user"><span class="material-symbols-outlined text-primary">description</span><span class="cell-title">' + UI.esc(d.name) + '</span></div></td>' +
         '<td><span class="badge badge-neutral">' + UI.esc(d.type) + '</span></td>' +
@@ -66,6 +102,11 @@
       });
     });
   }
+
+  if (vaultSearch) vaultSearch.addEventListener('input', function () { currentPage = 1; renderDocs(); });
+  if (vaultFilter) vaultFilter.addEventListener('change', function () { currentPage = 1; renderDocs(); });
+  if (btnPrev) btnPrev.addEventListener('click', function () { if (currentPage > 1) { currentPage--; renderDocs(); } });
+  if (btnNext) btnNext.addEventListener('click', function () { currentPage++; renderDocs(); });
 
   function addFiles(fileList) {
     var files = Array.prototype.slice.call(fileList);

@@ -149,9 +149,11 @@
               <input class="input" id="sched-date" type="date" required />
               <span class="field-error"></span>
             </div>
-            <div class="field">
-              <label class="field-label required" for="sched-time">Confirmed time</label>
-              <select class="select" id="sched-time" required></select>
+            <div class="field span-12">
+              <label class="field-label required">Confirmed time slot (30 mins)</label>
+              <input type="hidden" id="sched-time" required />
+              <div id="sched-slot-grid" class="row wrap gap-xs" style="margin-top:var(--space-xs)"></div>
+              <span class="field-error"></span>
             </div>
           </div>
           <p class="required-note">Required fields</p>
@@ -185,8 +187,9 @@
             <span class="field-error"></span>
           </div>
           <div class="field">
-            <label class="field-label required" for="resched-time">New Time</label>
-            <select class="select" id="resched-time" required></select>
+            <label class="field-label required">New Time Slot (30 mins)</label>
+            <input type="hidden" id="resched-time" required />
+            <div id="resched-slot-grid" class="row wrap gap-xs" style="margin-top:var(--space-xs)"></div>
             <span class="field-error"></span>
           </div>
         </div>

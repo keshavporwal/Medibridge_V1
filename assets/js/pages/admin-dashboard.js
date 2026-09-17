@@ -46,7 +46,12 @@
     });
     var line = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
     var area = 'M' + pad + ' ' + (h - pad) + ' ' + pts.map(function (p) { return 'L' + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ') + ' L' + (w - pad) + ' ' + (h - pad) + ' Z';
-    var dots = pts.map(function (p) { return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="var(--primary)"/>'; }).join('');
+    var dots = pts.map(function (p, i) {
+      return '<g class="chart-point" style="cursor:pointer">' +
+        '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5" fill="var(--primary)"><title>' + labs[i] + ': ' + values[i] + ' patients</title></circle>' +
+        '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] - 8).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="600" fill="var(--primary)">' + values[i] + '</text>' +
+      '</g>';
+    }).join('');
     var labels = labs.map(function (m, i) { return '<text x="' + (pad + i * stepX).toFixed(1) + '" y="' + (h - 6) + '" text-anchor="middle" font-size="10" fill="var(--muted)">' + m + '</text>'; }).join('');
     document.getElementById('volume-chart').innerHTML =
       '<svg viewBox="0 0 ' + w + ' ' + h + '" width="100%" role="img" aria-label="Patient volume trend">' +
@@ -125,9 +130,51 @@
   }
 
   /* ---------- Staff governance ------------------------------------------ */
+  var staffSearch = document.getElementById('staff-search');
+  var staffRoleFilter = document.getElementById('staff-role-filter');
+  var staffPageInfo = document.getElementById('staff-page-info');
+  var staffBtnPrev = document.getElementById('staff-btn-prev');
+  var staffBtnNext = document.getElementById('staff-btn-next');
+
+  var staffCurrentPage = 1;
+  var staffPageSize = 5;
+
   function renderStaff() {
     var host = document.getElementById('staff-body');
-    host.innerHTML = Store.all('staff').map(function (s) {
+    var term = (staffSearch ? staffSearch.value : '').trim().toLowerCase();
+    var roleFilter = staffRoleFilter ? staffRoleFilter.value : 'all';
+
+    // Remove / exclude revoked/inactive/deboarded staff
+    var activeStaff = Store.all('staff').filter(function (s) {
+      return s.status !== 'Inactive' && s.status !== 'Deboarded' && s.status !== 'Revoked';
+    });
+
+    var filtered = activeStaff.filter(function (s) {
+      var matchesSearch = !term || s.name.toLowerCase().indexOf(term) > -1 || s.email.toLowerCase().indexOf(term) > -1;
+      var matchesRole = roleFilter === 'all' || s.role === roleFilter;
+      return matchesSearch && matchesRole;
+    });
+
+    var totalItems = filtered.length;
+    var totalPages = Math.max(1, Math.ceil(totalItems / staffPageSize));
+    if (staffCurrentPage > totalPages) staffCurrentPage = totalPages;
+
+    var start = (staffCurrentPage - 1) * staffPageSize;
+    var pagedStaff = filtered.slice(start, start + staffPageSize);
+
+    if (staffPageInfo) {
+      staffPageInfo.textContent = totalItems ? 'Showing ' + (start + 1) + '–' + Math.min(start + staffPageSize, totalItems) + ' of ' + totalItems : 'Showing 0 of 0';
+    }
+    if (staffBtnPrev) staffBtnPrev.disabled = staffCurrentPage <= 1;
+    if (staffBtnNext) staffBtnNext.disabled = staffCurrentPage >= totalPages;
+
+    if (!pagedStaff.length) {
+      host.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="material-symbols-outlined">badge</span><p>' +
+        (term || roleFilter !== 'all' ? 'No staff match your search/filter.' : 'No active staff registered.') + '</p></div></td></tr>';
+      return;
+    }
+
+    host.innerHTML = pagedStaff.map(function (s) {
       return '<tr>' +
         '<td><div class="cell-user"><span class="avatar">' + UI.initials(s.name) + '</span>' +
           '<div><div class="cell-title">' + UI.esc(s.name) + '</div><div class="cell-sub">' + UI.esc(s.email) + '</div></div></div></td>' +
@@ -138,6 +185,7 @@
         '<td class="num"><button class="btn btn-ghost btn-sm" data-deboard="' + s.id + '" title="Deboard"><span class="material-symbols-outlined" style="color:var(--danger)">person_remove</span></button></td>' +
       '</tr>';
     }).join('');
+
     host.querySelectorAll('[data-toggle-status]').forEach(function (b) {
       b.addEventListener('click', function () {
         var s = Store.get('staff', b.getAttribute('data-toggle-status'));
@@ -149,6 +197,11 @@
       b.addEventListener('click', function () { openDeboard(b.getAttribute('data-deboard')); });
     });
   }
+
+  if (staffSearch) staffSearch.addEventListener('input', function () { staffCurrentPage = 1; renderStaff(); });
+  if (staffRoleFilter) staffRoleFilter.addEventListener('change', function () { staffCurrentPage = 1; renderStaff(); });
+  if (staffBtnPrev) staffBtnPrev.addEventListener('click', function () { if (staffCurrentPage > 1) { staffCurrentPage--; renderStaff(); } });
+  if (staffBtnNext) staffBtnNext.addEventListener('click', function () { staffCurrentPage++; renderStaff(); });
 
   function clinicOptions() {
     return Store.all('clinics').map(function (c, i) {

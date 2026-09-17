@@ -256,8 +256,56 @@
     }).join('');
     document.getElementById('req-date').min = Store.todayISO(0);
     document.getElementById('req-date').value = Store.todayISO(1);
-    document.getElementById('req-window').value = 'Morning';
     document.getElementById('req-reason').value = '';
+
+    var renderSlotGrid = function () {
+      var doctorId = document.getElementById('req-doctor').value;
+      var dateISO = document.getElementById('req-date').value;
+      var grid = document.getElementById('req-slot-grid');
+      var hiddenInput = document.getElementById('req-time');
+      hiddenInput.value = '';
+
+      var slots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
+      var d = dateISO ? new Date(dateISO + 'T00:00:00') : new Date();
+      var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      var dayName = dayNames[d.getDay()];
+      var week = Store.getAvailability(doctorId);
+      var dayAvail = week[dayName];
+
+      var start = '08:00', end = '17:00', lunchStart = '12:30', lunchEnd = '13:30';
+      var active = true;
+      if (dayAvail) {
+        if (dayAvail.active === false) active = false;
+        if (dayAvail.start) start = dayAvail.start;
+        if (dayAvail.end) end = dayAvail.end;
+        if (dayAvail.lunch && dayAvail.lunch.indexOf('-') > -1) {
+          var lp = dayAvail.lunch.split('-');
+          lunchStart = lp[0].trim(); lunchEnd = lp[1].trim();
+        }
+      }
+
+      var existingAppts = Store.where('appointments', function (a) { return a.doctorId === doctorId && a.date === dateISO && a.status !== 'Cancelled'; });
+      var bookedTimes = existingAppts.map(function (a) { return a.time; });
+
+      grid.innerHTML = slots.map(function (s) {
+        var isAvailable = active && (s >= start && s < end) && !(s >= lunchStart && s < lunchEnd) && (bookedTimes.indexOf(s) === -1);
+        return '<button type="button" class="btn btn-sm slot-btn ' + (isAvailable ? 'btn-ghost' : 'disabled') + '" data-slot="' + s + '" ' + (isAvailable ? '' : 'disabled style="opacity:0.4;cursor:not-allowed"') + '>' + UI.fmtTime(s) + '</button>';
+      }).join('');
+
+      grid.querySelectorAll('[data-slot]:not([disabled])').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          grid.querySelectorAll('.slot-btn').forEach(function (b) { b.classList.remove('btn-primary'); b.classList.add('btn-ghost'); });
+          btn.classList.remove('btn-ghost');
+          btn.classList.add('btn-primary');
+          hiddenInput.value = btn.getAttribute('data-slot');
+          UI.clearError(hiddenInput);
+        });
+      });
+    };
+
+    document.getElementById('req-doctor').onchange = renderSlotGrid;
+    document.getElementById('req-date').onchange = renderSlotGrid;
+    renderSlotGrid();
     document.getElementById('req-notes').value = '';
     UI.clearErrors(reqForm);
     UI.openModal('request-modal');
@@ -268,12 +316,18 @@
   reqForm.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!UI.validate(reqForm)) return;
+    var reqTime = document.getElementById('req-time').value;
+    if (!reqTime) {
+      UI.setError(document.getElementById('req-time'), 'Please click to select an available time slot.');
+      return;
+    }
     var doctor = Store.get('doctors', document.getElementById('req-doctor').value);
     Store.insert('appointmentRequests', {
       patientId: patientId, patientName: patient.name, mrn: patient.mrn,
       doctorId: doctor.id, doctorName: doctor.name,
       preferredDate: document.getElementById('req-date').value,
-      window: document.getElementById('req-window').value,
+      window: UI.fmtTime(reqTime),
+      preferredTime: reqTime,
       reason: document.getElementById('req-reason').value.trim(),
       notes: document.getElementById('req-notes').value.trim(),
       status: 'Pending', createdAt: Date.now()

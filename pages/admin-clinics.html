@@ -61,7 +61,7 @@
         </div>
         <div class="table-wrap">
           <table class="data-table">
-            <thead><tr><th>Clinic</th><th>Specialty</th><th>Clinic code</th><th>Address</th><th class="num">Staff</th><th>Status</th></tr></thead>
+            <thead><tr><th>Clinic</th><th>Specialty</th><th>Clinic code</th><th>Address</th><th class="num">Staff</th><th>Status</th><th class="num">Actions</th></tr></thead>
             <tbody id="clinics-body"></tbody>
           </table>
         </div>
@@ -74,6 +74,36 @@
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- ===== Offboard Clinic modal ===== -->
+  <div class="modal-overlay" id="offboard-modal">
+    <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="off-title">
+      <div class="modal-header">
+        <div class="row gap-sm">
+          <span class="stat-icon" style="background:var(--danger-surface);color:var(--danger)"><span class="material-symbols-outlined">domain_disabled</span></span>
+          <div>
+            <h2 class="modal-title" id="off-title">Offboard Clinic</h2>
+            <p class="modal-desc">Deactivate facility and revoke staff links.</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="offboard-form" novalidate>
+        <div class="modal-body">
+          <div class="notice notice-warning" style="margin-bottom:var(--space-base)">
+            <span class="material-symbols-outlined">warning</span>
+            <p class="body-sm">You are about to offboard <span class="strong" id="off-clinic-name">this clinic</span>. This deactivates the facility and revokes active access.</p>
+          </div>
+          <label class="check-row"><input type="checkbox" id="off-confirm" required /> I confirm facility offboarding.</label>
+          <span class="field-error" id="off-error"></span>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-danger" type="submit"><span class="material-symbols-outlined">delete</span><span>Offboard clinic</span></button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- ===== Enroll New Clinic modal ===== -->

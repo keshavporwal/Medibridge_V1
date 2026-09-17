@@ -59,15 +59,35 @@
           </div>
 
           <div class="card">
-            <div class="card-header">
-              <span class="card-title">My documents</span>
-              <span class="label-sm muted" id="doc-count"></span>
+            <div class="card-header row-between wrap gap-md">
+              <div class="row gap-sm">
+                <span class="card-title">My documents</span>
+                <span class="label-sm muted" id="doc-count"></span>
+              </div>
+              <div class="row gap-sm wrap">
+                <input class="input" id="vault-search" type="search" placeholder="Search file name..." style="max-width:200px" />
+                <select class="select" id="vault-filter" style="max-width:150px">
+                  <option value="all" selected>All Types</option>
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Lab Report">Lab Report</option>
+                  <option value="Summary">Summary</option>
+                  <option value="Image">Image</option>
+                  <option value="Document">Document</option>
+                </select>
+              </div>
             </div>
             <div class="table-wrap">
               <table class="data-table">
                 <thead><tr><th>File</th><th>Type</th><th class="num">Size</th><th>Uploaded</th><th></th></tr></thead>
                 <tbody id="docs-body"></tbody>
               </table>
+            </div>
+            <div class="card-footer row-between" style="padding:var(--space-md)">
+              <span class="body-sm muted" id="vault-page-info">Showing 0 of 0</span>
+              <div class="row gap-xs">
+                <button class="btn btn-ghost btn-sm" id="vault-btn-prev" disabled>Previous</button>
+                <button class="btn btn-ghost btn-sm" id="vault-btn-next" disabled>Next</button>
+              </div>
             </div>
           </div>
         </div>

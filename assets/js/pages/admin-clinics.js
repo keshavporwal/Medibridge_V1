@@ -69,10 +69,14 @@
         '<td>' + UI.esc(c.address || '\u2014') + '</td>' +
         '<td class="num">' + (c.staffCount || 0) + '</td>' +
         '<td><span class="badge ' + (STATUS_BADGE[c.status] || 'badge-neutral') + '"><span class="dot"></span>' + UI.esc(c.status) + '</span></td>' +
+        '<td class="num"><button class="btn btn-ghost btn-sm text-danger" data-offboard="' + c.id + '" title="Offboard clinic"><span class="material-symbols-outlined">domain_disabled</span></button></td>' +
       '</tr>';
     }).join('');
     host.querySelectorAll('[data-code]').forEach(function (b) {
       b.addEventListener('click', function () { copyCode(b.getAttribute('data-code')); });
+    });
+    host.querySelectorAll('[data-offboard]').forEach(function (b) {
+      b.addEventListener('click', function () { openOffboard(b.getAttribute('data-offboard')); });
     });
   }
 
@@ -106,6 +110,39 @@
     UI.toast(name + ' enrolled. Clinic code: ' + code + ' \u2014 share it with your doctors and staff.', 'success', 'Clinic added');
     renderClinics();
   });
+
+  var offboardForm = document.getElementById('offboard-form');
+  var activeOffboardClinicId = null;
+
+  function openOffboard(clinicId) {
+    var c = Store.get('clinics', clinicId);
+    if (!c) return;
+    activeOffboardClinicId = clinicId;
+    document.getElementById('off-clinic-name').textContent = c.name;
+    document.getElementById('off-confirm').checked = false;
+    document.getElementById('off-error').style.display = 'none';
+    UI.openModal('offboard-modal');
+  }
+
+  if (offboardForm) {
+    offboardForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var err = document.getElementById('off-error');
+      if (!document.getElementById('off-confirm').checked) {
+        err.textContent = 'Please confirm facility offboarding to proceed.';
+        err.style.display = 'block';
+        return;
+      }
+      err.style.display = 'none';
+      var c = Store.get('clinics', activeOffboardClinicId);
+      if (c) {
+        Store.remove('clinics', activeOffboardClinicId);
+        UI.closeModal('offboard-modal');
+        UI.toast(c.name + ' has been offboarded and removed.', 'success', 'Clinic Offboarded');
+        renderClinics();
+      }
+    });
+  }
 
   renderClinics();
 })();

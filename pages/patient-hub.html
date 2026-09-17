@@ -168,12 +168,11 @@
               <input class="input" id="req-date" type="date" required />
               <span class="field-error"></span>
             </div>
-            <div class="field">
-              <label class="field-label required" for="req-window">Preferred window</label>
-              <select class="select" id="req-window" required>
-                <option value="Morning" selected>Morning (8a–12p)</option>
-                <option value="Afternoon">Afternoon (1p–5p)</option>
-              </select>
+            <div class="field span-12">
+              <label class="field-label required">Preferred time slot (30 mins)</label>
+              <input type="hidden" id="req-time" required />
+              <div id="req-slot-grid" class="row wrap gap-xs" style="margin-top:var(--space-xs)"></div>
+              <span class="field-error"></span>
             </div>
             <div class="field">
               <label class="field-label required" for="req-reason">Reason for visit</label>

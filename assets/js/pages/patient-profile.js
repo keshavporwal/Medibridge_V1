@@ -55,7 +55,25 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!UI.validate(form)) return;
-    var dobVal = document.getElementById('pf-dob').value;
+    var dobInput = document.getElementById('pf-dob');
+    var dobVal = dobInput.value;
+
+    if (dobVal) {
+      var dobDate = new Date(dobVal + 'T00:00:00');
+      var now = new Date();
+      now.setHours(0, 0, 0, 0);
+      if (dobDate >= now) {
+        UI.setError(dobInput, 'Date of birth must be in the past.');
+        return;
+      }
+      var maxAgeDate = new Date();
+      maxAgeDate.setFullYear(maxAgeDate.getFullYear() - 120);
+      if (dobDate < maxAgeDate) {
+        UI.setError(dobInput, 'Please enter a valid date of birth.');
+        return;
+      }
+    }
+
     var countryCodeVal = document.getElementById('pf-country-code').value.trim();
     var phoneVal = document.getElementById('pf-phone').value.trim();
     var allergiesVal = document.getElementById('pf-allergies').value.trim();

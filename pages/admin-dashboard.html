@@ -96,15 +96,33 @@
 
         <!-- Staff governance -->
         <div class="span-12 card">
-          <div class="card-header">
-            <span class="card-title">Staff Governance</span>
-            <span class="label-sm muted">Click a status to toggle</span>
+          <div class="card-header row-between wrap gap-md">
+            <div class="row gap-sm">
+              <span class="card-title">Staff Governance</span>
+              <span class="label-sm muted">Click a status to toggle</span>
+            </div>
+            <div class="row gap-sm wrap">
+              <input class="input" id="staff-search" type="search" placeholder="Search staff name or email..." style="max-width:220px" />
+              <select class="select" id="staff-role-filter" style="max-width:150px">
+                <option value="all" selected>All Roles</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Nurse">Nurse</option>
+              </select>
+            </div>
           </div>
           <div class="table-wrap">
             <table class="data-table">
               <thead><tr><th>Staff</th><th>Clinic</th><th>Role / specialty</th><th>Onboarded</th><th>Status</th><th></th></tr></thead>
               <tbody id="staff-body"></tbody>
             </table>
+          </div>
+          <div class="card-footer row-between" style="padding:var(--space-md)">
+            <span class="body-sm muted" id="staff-page-info">Showing 0 of 0</span>
+            <div class="row gap-xs">
+              <button class="btn btn-ghost btn-sm" id="staff-btn-prev" disabled>Previous</button>
+              <button class="btn btn-ghost btn-sm" id="staff-btn-next" disabled>Next</button>
+            </div>
           </div>
         </div>
       </div>

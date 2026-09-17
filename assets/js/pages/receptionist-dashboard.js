@@ -74,13 +74,29 @@
         '<td><div class="cell-user"><span class="avatar">' + UI.esc(UI.initials(r.patientName)) + '</span>' +
           '<div><div class="cell-title">' + UI.esc(r.patientName) + '</div><div class="cell-sub">' + UI.esc(r.mrn || '') + '</div></div></div></td>' +
         '<td>' + UI.esc(r.doctorName) + '</td>' +
-        '<td>' + UI.fmtDate(r.preferredDate) + '<div class="cell-sub">' + UI.esc(r.window) + ' • ' + UI.esc(r.type) + '</div></td>' +
+        '<td>' + UI.fmtDate(r.preferredDate) + '<div class="cell-sub">' + UI.esc(r.window || '') + '</div></td>' +
         '<td>' + UI.esc(r.reason) + '</td>' +
-        '<td class="num"><button class="btn btn-primary btn-sm" data-schedule="' + r.id + '">Review</button></td>' +
+        '<td class="num">' +
+          '<div class="row gap-xs justify-end">' +
+            '<button class="btn btn-primary btn-sm" data-schedule="' + r.id + '">Review</button>' +
+            '<button class="btn btn-ghost btn-sm text-danger" data-reject="' + r.id + '">Reject</button>' +
+          '</div>' +
+        '</td>' +
       '</tr>';
     }).join('');
     body.querySelectorAll('[data-schedule]').forEach(function (b) {
       b.addEventListener('click', function () { openSchedule(b.getAttribute('data-schedule')); });
+    });
+    body.querySelectorAll('[data-reject]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = b.getAttribute('data-reject');
+        var req = Store.get('appointmentRequests', id);
+        if (req && confirm('Are you sure you want to reject the appointment request from ' + req.patientName + '?')) {
+          Store.update('appointmentRequests', id, { status: 'Rejected' });
+          UI.toast('Appointment request rejected.', 'info', 'Request Rejected');
+          renderAll();
+        }
+      });
     });
   }
 
@@ -148,7 +164,26 @@
         dateEl.value = appt.date;
 
         var updateReschedSlots = function () {
-          document.getElementById('resched-time').innerHTML = slotOptions(appt.time, appt.doctorId, dateEl.value);
+          var dateVal = dateEl.value;
+          var grid = document.getElementById('resched-slot-grid');
+          var hiddenInput = document.getElementById('resched-time');
+          hiddenInput.value = '';
+
+          var avail = getAvailableSlots(appt.doctorId, dateVal);
+          grid.innerHTML = SLOTS.map(function (s) {
+            var isAvailable = avail.indexOf(s) > -1;
+            return '<button type="button" class="btn btn-sm slot-btn ' + (isAvailable ? 'btn-ghost' : 'disabled') + '" data-slot="' + s + '" ' + (isAvailable ? '' : 'disabled style="opacity:0.4;cursor:not-allowed"') + '>' + UI.fmtTime(s) + '</button>';
+          }).join('');
+
+          grid.querySelectorAll('[data-slot]:not([disabled])').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              grid.querySelectorAll('.slot-btn').forEach(function (b) { b.classList.remove('btn-primary'); b.classList.add('btn-ghost'); });
+              btn.classList.remove('btn-ghost');
+              btn.classList.add('btn-primary');
+              hiddenInput.value = btn.getAttribute('data-slot');
+              UI.clearError(hiddenInput);
+            });
+          });
         };
         dateEl.onchange = updateReschedSlots;
         updateReschedSlots();
@@ -201,7 +236,27 @@
     var updateSlots = function () {
       var docId = document.getElementById('sched-doctor').value;
       var dateVal = document.getElementById('sched-date').value;
-      document.getElementById('sched-time').innerHTML = slotOptions(r.window === 'Afternoon' ? '13:00' : '09:00', docId, dateVal);
+      var grid = document.getElementById('sched-slot-grid');
+      var hiddenInput = document.getElementById('sched-time');
+      hiddenInput.value = '';
+
+      var avail = getAvailableSlots(docId, dateVal);
+      var allSlots = SLOTS;
+
+      grid.innerHTML = allSlots.map(function (s) {
+        var isAvailable = avail.indexOf(s) > -1;
+        return '<button type="button" class="btn btn-sm slot-btn ' + (isAvailable ? 'btn-ghost' : 'disabled') + '" data-slot="' + s + '" ' + (isAvailable ? '' : 'disabled style="opacity:0.4;cursor:not-allowed"') + '>' + UI.fmtTime(s) + '</button>';
+      }).join('');
+
+      grid.querySelectorAll('[data-slot]:not([disabled])').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          grid.querySelectorAll('.slot-btn').forEach(function (b) { b.classList.remove('btn-primary'); b.classList.add('btn-ghost'); });
+          btn.classList.remove('btn-ghost');
+          btn.classList.add('btn-primary');
+          hiddenInput.value = btn.getAttribute('data-slot');
+          UI.clearError(hiddenInput);
+        });
+      });
     };
     document.getElementById('sched-doctor').onchange = updateSlots;
     document.getElementById('sched-date').onchange = updateSlots;
