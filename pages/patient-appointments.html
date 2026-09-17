@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointments — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="patient-hub.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Health Hub</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <a class="profile-link" href="patient-profile.html" title="Your profile">
+            <div class="profile-meta">
+              <span class="profile-name" data-user-name>Patient</span>
+              <span class="label-sm muted" data-user-title>Patient</span>
+            </div>
+            <div class="avatar" data-avatar>MC</div>
+          </a>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="patient-hub.html"><span class="material-symbols-outlined">home</span>Health Hub</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Appointments</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">My Appointments</h1>
+          <p class="page-subtitle">Scheduled visits and pending requests.</p>
+        </div>
+        <button class="btn btn-primary" id="btn-request"><span class="material-symbols-outlined">calendar_add_on</span>Request Appointment</button>
+      </div>
+
+      <div class="bento">
+        <div class="span-8 card">
+          <div class="card-header">
+            <div class="row gap-sm">
+              <button class="icon-btn" id="cal-prev" aria-label="Previous month"><span class="material-symbols-outlined">chevron_left</span></button>
+              <span class="card-title" id="cal-title">Month</span>
+              <button class="icon-btn" id="cal-next" aria-label="Next month"><span class="material-symbols-outlined">chevron_right</span></button>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="cal-today">Today</button>
+          </div>
+          <div class="cal-grid" id="calendar"></div>
+        </div>
+
+        <div class="span-4 col gap-lg">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Upcoming</span></div>
+            <div id="upcoming-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Pending requests</span></div>
+            <div id="requests-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Request Appointment modal (shared markup) ===== -->
+  <div class="modal-overlay" id="request-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="req-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="req-title">Request an Appointment</h2>
+          <p class="modal-desc">Submit a consultation or follow-up request to your care team.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="request-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label required" for="req-doctor">Healthcare clinician</label>
+            <select class="select" id="req-doctor" required></select>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label required" for="req-type">Visit type</label>
+              <select class="select" id="req-type" required>
+                <option value="In-person" selected>In-person</option>
+                <option value="Telehealth">Telehealth</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="req-date">Preferred date</label>
+              <input class="input" id="req-date" type="date" required />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="req-window">Preferred window</label>
+              <select class="select" id="req-window" required>
+                <option value="Morning" selected>Morning (8a–12p)</option>
+                <option value="Afternoon">Afternoon (1p–5p)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="req-reason">Reason for visit</label>
+              <input class="input" id="req-reason" type="text" data-min="3" data-maxlen="120" required placeholder="e.g. Cardiology follow-up" />
+              <span class="field-error"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="req-notes">Notes for clinician <span class="muted label-md">(optional)</span></label>
+            <textarea class="textarea" id="req-notes" placeholder="Briefly describe symptoms or questions for the doctor..."></textarea>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer between">
+          <span class="row gap-xs muted body-sm"><span class="material-symbols-outlined" style="font-size:16px">verified_user</span>Routed directly to the intake desk</span>
+          <div class="row gap-md">
+            <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+            <button class="btn btn-primary" type="submit"><span>Submit request</span><span class="material-symbols-outlined">send</span></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/patient-appointments.js"></script>
+</body>
+</html>

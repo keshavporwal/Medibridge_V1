@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical Workspace — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="doctor-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Clinical Care Grid</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="badge-dot hidden" id="notif-count">0</span>
+        </button>
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Doctor</span>
+            <span class="label-sm muted" data-user-title>Cardiology / Attending</span>
+          </div>
+          <div class="avatar" data-avatar>EV</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span class="current"><span class="material-symbols-outlined">home</span>Workspace</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Good day, <span data-user-name>Doctor</span></h1>
+          <p class="page-subtitle" id="today-label">Today's roster and schedule</p>
+        </div>
+        <div class="row gap-sm">
+          <a class="btn btn-secondary" href="doctor-patients.html"><span class="material-symbols-outlined">groups</span>Patients</a>
+          <button class="btn btn-secondary" id="btn-availability"><span class="material-symbols-outlined">schedule</span>Set Availability</button>
+          <button class="btn btn-primary" id="btn-docrequest"><span class="material-symbols-outlined">post_add</span>Request Document</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="bento" style="margin-bottom:var(--space-lg)">
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-patients" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon"><span class="material-symbols-outlined">groups</span></span>
+            <span class="stat-value" id="kpi-patients">0</span><span class="stat-label">Patients today</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-docpending" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--warning-surface);color:var(--warning)"><span class="material-symbols-outlined">pending_actions</span></span>
+            <span class="stat-value" id="kpi-docpending">0</span><span class="stat-label">Doc requests pending</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-shared" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--success-surface);color:var(--success)"><span class="material-symbols-outlined">folder_shared</span></span>
+            <span class="stat-value" id="kpi-shared">0</span><span class="stat-label">Records shared with you</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-next" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--info-surface);color:var(--info)"><span class="material-symbols-outlined">timer</span></span>
+            <span class="stat-value" id="kpi-next" style="font-size:24px">—</span><span class="stat-label">Next appointment</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="bento">
+        <!-- Today's roster -->
+        <div class="span-7 card">
+          <div class="card-header">
+            <span class="card-title">Today's Patient Roster</span>
+            <span class="label-sm muted" id="roster-count"></span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Time</th><th>Patient</th><th>Type</th><th>Reason</th><th></th></tr></thead>
+              <tbody id="roster-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Today's schedule gantt -->
+        <div class="span-5 card">
+          <div class="card-header">
+            <span class="card-title">Today's Schedule</span>
+            <span class="row gap-md"><a href="doctor-schedule-weekly.html" class="label-md">Weekly</a><a href="doctor-schedule-monthly.html" class="label-md">Monthly</a></span>
+          </div>
+          <div id="gantt"></div>
+        </div>
+
+        <!-- Document request tracker -->
+        <div class="span-7 card">
+          <div class="card-header">
+            <span class="card-title">Document Request Tracker</span>
+            <span class="label-sm muted">Privacy-preserving</span>
+          </div>
+          <div id="docreq-list"></div>
+        </div>
+
+        <!-- Records shared with you -->
+        <div class="span-5 card">
+          <div class="card-header"><span class="card-title">Shared With You</span></div>
+          <div id="grants-list"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Document Request modal ===== -->
+  <div class="modal-overlay" id="docreq-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="dr-title">
+      <div class="modal-header">
+        <div class="row gap-sm">
+          <span class="stat-icon"><span class="material-symbols-outlined">post_add</span></span>
+          <div>
+            <h2 class="modal-title" id="dr-title">Request Clinical Document</h2>
+            <p class="modal-desc">Ask the patient to share specific records. You cannot browse their vault.</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="docreq-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label required" for="dr-patient">Patient</label>
+            <select class="select" id="dr-patient" required></select>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="dr-message">Instructions to patient</label>
+            <textarea class="textarea" id="dr-message" data-min="5" data-maxlen="500" required placeholder="e.g. Please share any cardiology ECG traces or lipid panels from the past 6 months."></textarea>
+            <span class="field-error"></span>
+          </div>
+          <div class="notice">
+            <span class="material-symbols-outlined">verified_user</span>
+            <p class="body-sm muted">The patient explicitly selects which files to share. Nothing is accessed without consent.</p>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">send</span><span>Send request</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Set Availability modal ===== -->
+  <div class="modal-overlay" id="avail-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="av-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="av-title">Set Weekly Availability</h2>
+          <p class="modal-desc">Define working hours, active shifts, and lunch buffers.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="avail-form" novalidate>
+        <div class="modal-body">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Day</th><th>Active</th><th>Start</th><th>End</th><th>Lunch</th></tr></thead>
+              <tbody id="avail-body"></tbody>
+            </table>
+          </div>
+          <span class="field-error" id="avail-error" style="margin-top:var(--space-sm)"></span>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">save</span><span>Save availability</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/doc-preview.js"></script>
+  <script src="../assets/js/pages/doctor-dashboard.js"></script>
+</body>
+</html>

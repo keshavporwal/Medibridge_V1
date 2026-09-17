@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Institute Operations — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="admin-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Institute Operations</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Admin</span>
+            <span class="label-sm muted" data-user-title>Operations Lead</span>
+          </div>
+          <div class="avatar" data-avatar>PA</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span class="current"><span class="material-symbols-outlined">home</span>Operations</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Clinical Operations Command Center</h1>
+          <p class="page-subtitle">Network governance, staff roster, and patient volume.</p>
+        </div>
+        <div class="row gap-sm">
+          <button class="btn btn-secondary" id="btn-onboard"><span class="material-symbols-outlined">person_add</span>Onboard Staff</button>
+          <a class="btn btn-primary" href="admin-clinics.html"><span class="material-symbols-outlined">domain_add</span>Manage Clinics</a>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="bento" style="margin-bottom:var(--space-lg)">
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-clinics" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon"><span class="material-symbols-outlined">apartment</span></span>
+            <span class="stat-value" id="kpi-clinics">0</span><span class="stat-label">Enrolled clinics</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-active" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--success-surface);color:var(--success)"><span class="material-symbols-outlined">verified</span></span>
+            <span class="stat-value" id="kpi-active">0</span><span class="stat-label">Active facilities</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-staff" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--info-surface);color:var(--info)"><span class="material-symbols-outlined">badge</span></span>
+            <span class="stat-value" id="kpi-staff">0</span><span class="stat-label">Total staff roster</span>
+          </div>
+        </button>
+        <button type="button" class="span-3 card kpi-card" id="kpi-card-volume" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--warning-surface);color:var(--warning)"><span class="material-symbols-outlined">monitoring</span></span>
+            <span class="stat-value" id="kpi-volume">0</span><span class="stat-label">Aggregate patient volume</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="bento">
+        <!-- Volume trend -->
+        <div class="span-8 card">
+          <div class="card-header">
+            <div><span class="card-title">Patient Volume Trends</span><p class="body-sm muted">Monthly clinic-wide throughput</p></div>
+            <span class="badge badge-neutral" id="volume-trend"><span class="dot"></span>&mdash;</span>
+          </div>
+          <div id="volume-chart"></div>
+        </div>
+
+        <!-- Clinics quick directory -->
+        <div class="span-4 card">
+          <div class="card-header"><span class="card-title">Enrolled Clinics</span><a href="admin-clinics.html" class="label-md">View all</a></div>
+          <div class="list" id="clinics-quick"></div>
+        </div>
+
+        <!-- Staff governance -->
+        <div class="span-12 card">
+          <div class="card-header">
+            <span class="card-title">Staff Governance</span>
+            <span class="label-sm muted">Click a status to toggle</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Staff</th><th>Clinic</th><th>Role / specialty</th><th>Onboarded</th><th>Status</th><th></th></tr></thead>
+              <tbody id="staff-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Onboard Staff modal ===== -->
+  <div class="modal-overlay" id="onboard-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ob-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="ob-title">Onboard Staff Member</h2>
+          <p class="modal-desc">Provisions role credentials and assigns a clinic.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="onboard-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label required" for="ob-name">Full legal name</label>
+            <input class="input" id="ob-name" type="text" data-type="name" data-maxlen="80" required placeholder="Dr. Sarah Jenkins" />
+            <span class="field-error"></span>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="ob-email">Institutional email</label>
+            <input class="input" id="ob-email" type="email" data-type="email" required placeholder="s.jenkins@medibridge.health" />
+            <span class="field-error"></span>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label required" for="ob-clinic">Assigned clinic</label>
+              <select class="select" id="ob-clinic" required></select>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="ob-role">Role designation</label>
+              <select class="select" id="ob-role" required>
+                <option value="Doctor" selected>Doctor</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Nurse">Nurse</option>
+              </select>
+            </div>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">how_to_reg</span><span>Onboard &amp; provision</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Deboard Staff modal ===== -->
+  <div class="modal-overlay" id="deboard-modal">
+    <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="db-title">
+      <div class="modal-header">
+        <div class="row gap-sm">
+          <span class="stat-icon" style="background:var(--danger-surface);color:var(--danger)"><span class="material-symbols-outlined">person_remove</span></span>
+          <div>
+            <h2 class="modal-title" id="db-title">Deboard Staff</h2>
+            <p class="modal-desc">Revokes credentials and reassigns open work.</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="deboard-form" novalidate>
+        <div class="modal-body">
+          <div class="notice notice-warning" style="margin-bottom:var(--space-base)">
+            <span class="material-symbols-outlined">warning</span>
+            <p class="body-sm">You are about to offboard <span class="strong" id="db-name">this staff member</span>. This immediately revokes institutional access.</p>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="db-reassign">Reassign open consultations to</label>
+            <select class="select" id="db-reassign" required></select>
+          </div>
+          <label class="check-row"><input type="checkbox" id="db-confirm" required /> I confirm credential revocation and reassignment.</label>
+          <span class="field-error" id="db-error"></span>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-danger" type="submit"><span class="material-symbols-outlined">gpp_bad</span><span>Deboard staff</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/admin-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="auth">
+    <!-- Visual panel -->
+    <aside class="auth-visual">
+      <img id="img-patient" class="active" alt="" src="../assets/img/auth-patient.png" />
+      <img id="img-doctor" alt="" src="../assets/img/auth-doctor.png" />
+      <img id="img-receptionist" alt="" src="../assets/img/auth-desk.png" />
+      <img id="img-admin" alt="" src="../assets/img/auth-admin.png" />
+      <div class="row gap-sm">
+        <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+        <span class="headline-md" style="color:#fff">MediBridge</span>
+      </div>
+      <div class="auth-quote">
+        <span class="badge badge-success" style="background:rgba(16,185,129,.16);border-color:rgba(16,185,129,.3);color:#a7f3d0">
+          <span class="dot"></span><span id="visual-badge">Patient Health Portal</span>
+        </span>
+        <h2 id="visual-headline" style="margin-top:var(--space-md)">Your care journey and health vault, in one place.</h2>
+        <p id="visual-sub" style="color:#cbd5e1;margin-top:var(--space-sm)">Encrypted record access, appointment requests, and continuous care timelines coordinated with your care team.</p>
+      </div>
+    </aside>
+
+    <!-- Form panel -->
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="card" id="login-card">
+          <!-- Sign in / Register tabs -->
+          <div class="tabs" role="tablist" id="auth-tabs">
+            <button class="tab active" id="tab-signin" type="button">Sign in</button>
+            <button class="tab" id="tab-register" type="button">Create account</button>
+          </div>
+
+          <!-- Administrator portal indicator (shown only in admin mode) -->
+          <div class="admin-banner hidden" id="admin-banner">
+            <span class="material-symbols-outlined">shield_person</span>
+            <div class="col">
+              <span class="admin-banner-title">Institute Administrator portal</span>
+              <span class="admin-banner-sub">Elevated access · restricted to institute admins</span>
+            </div>
+          </div>
+
+          <!-- Role selector -->
+          <div class="field" id="role-field">
+            <span class="field-label">Operational role</span>
+            <div class="role-switch" id="role-switch">
+              <button type="button" class="active" data-role="patient"><span class="material-symbols-outlined">person</span>Patient</button>
+              <button type="button" data-role="doctor"><span class="material-symbols-outlined">stethoscope</span>Doctor</button>
+              <button type="button" data-role="receptionist"><span class="material-symbols-outlined">support_agent</span>Desk</button>
+            </div>
+          </div>
+
+          <!-- SIGN IN -->
+          <form id="signin-form" novalidate>
+            <div class="col gap-xs" style="margin-bottom:var(--space-base)">
+              <h1 class="headline-md" id="signin-title">Welcome back</h1>
+              <p class="muted body-sm">Sign in to your synchronized clinical workspace.</p>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="si-email">Email</label>
+              <input class="input" id="si-email" type="email" data-type="email" required placeholder="you@example.com" autocomplete="username" />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="si-password">Password</label>
+              <div class="input-group">
+                <input class="input" id="si-password" type="password" required placeholder="Enter password" autocomplete="current-password" />
+                <button type="button" class="input-affix" data-toggle-pw="si-password" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+              </div>
+              <span class="field-error"></span>
+            </div>
+            <div class="row-between" style="margin:var(--space-sm) 0 var(--space-base)">
+              <label class="check-row"><input type="checkbox" id="si-remember" />Remember me</label>
+              <a href="forgot-password-questions.html">Forgot password?</a>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">
+              <span>Sign in to workspace</span><span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <p class="required-note" style="margin-top:var(--space-md)">Required fields</p>
+          </form>
+
+          <!-- REGISTER -->
+          <form id="register-form" class="hidden" novalidate>
+            <div class="col gap-xs" style="margin-bottom:var(--space-base)">
+              <h1 class="headline-md">Create account</h1>
+              <p class="muted body-sm">Simple enrollment for patients and clinical staff.</p>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="rg-name">Full name</label>
+              <input class="input" id="rg-name" type="text" data-type="name" data-maxlen="80" required placeholder="Alex Rivera" />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="rg-email">Official email</label>
+              <input class="input" id="rg-email" type="email" data-type="email" required placeholder="you@example.com" />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="rg-password">Password</label>
+              <div class="input-group">
+                <input class="input" id="rg-password" type="password" required placeholder="At least 8 characters" />
+                <button type="button" class="input-affix" data-toggle-pw="rg-password" aria-label="Show password"><span class="material-symbols-outlined">visibility</span></button>
+              </div>
+              <div class="strength" id="rg-strength"><span></span><span></span><span></span><span></span></div>
+              <span class="strength-label muted" id="rg-strength-label">Use 8+ chars with an uppercase letter, a number, and a symbol.</span>
+              <span class="field-error"></span>
+            </div>
+            <div class="field hidden" id="rg-clinic-field">
+              <label class="field-label required" for="rg-clinic">Clinic code</label>
+              <input class="input" id="rg-clinic" type="text" data-pattern="^CLN-[A-Za-z0-9]{4,6}$" data-pattern-flags="i" data-pattern-msg="Clinic code looks like CLN-AB12C." placeholder="e.g. CLN-AB12C" autocomplete="off" />
+              <span class="field-hint">Provided by your institute administrator to link you to your clinic.</span>
+              <span class="field-error"></span>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit" style="margin-top:var(--space-sm)">
+              <span>Continue to security setup</span><span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <p class="required-note" style="margin-top:var(--space-md)">Required fields</p>
+          </form>
+
+          <div class="admin-link">
+            <a href="#" id="admin-portal">Institute Administrator? Sign in here &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/login.js"></script>
+</body>
+</html>

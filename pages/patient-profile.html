@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+  <style>
+    .idpass { background: linear-gradient(135deg, var(--primary), var(--primary-container)); color: #fff; border: none; }
+    .idpass .id-photo { width: 72px; height: 72px; border-radius: var(--radius-md); background: rgba(255,255,255,.18); display: grid; place-items: center; font: var(--headline-lg); }
+    .id-field { display: flex; flex-direction: column; gap: 2px; }
+    .id-field .k { font: var(--label-sm); text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+    .id-field .v { font: var(--headline-sm); }
+    .qr { background: #fff; padding: var(--space-sm); border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="patient-hub.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Health Hub</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <a class="profile-link" href="patient-profile.html" title="Your profile">
+            <div class="profile-meta">
+              <span class="profile-name" data-user-name>Patient</span>
+              <span class="label-sm muted" data-user-title>Patient</span>
+            </div>
+            <div class="avatar" data-avatar>MC</div>
+          </a>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="patient-hub.html"><span class="material-symbols-outlined">home</span>Health Hub</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Profile</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Digital Identification Pass</h1>
+          <p class="page-subtitle">Present this at check-in for fast, secure intake.</p>
+        </div>
+        <a class="btn btn-secondary" href="account.html"><span class="material-symbols-outlined">lock</span>Account &amp; security</a>
+      </div>
+
+      <div class="bento">
+        <!-- ID pass -->
+        <div class="span-7 card idpass">
+          <div class="row-between">
+            <div class="row gap-md">
+              <div class="id-photo" data-avatar>MC</div>
+              <div class="col gap-xs">
+                <span class="headline-lg" data-user-name>Patient</span>
+                <span class="badge" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:#fff"><span class="dot"></span>Active patient</span>
+              </div>
+            </div>
+            <div class="col gap-xs" style="align-items:center">
+              <div class="qr" id="qr"></div>
+              <span class="label-sm" style="color:rgba(255,255,255,.85)">Scan to open shared pass</span>
+              <a id="share-link" href="#" target="_blank" rel="noopener" style="color:rgba(255,255,255,.85);font-size:11px;text-decoration:underline;max-width:180px;text-align:center;word-break:break-all"></a>
+            </div>
+          </div>
+          <div class="bento" style="margin-top:var(--space-xl);gap:var(--space-lg)">
+            <div class="span-4 id-field"><span class="k">MRN</span><span class="v" id="id-mrn">—</span></div>
+            <div class="span-4 id-field"><span class="k">Date of birth</span><span class="v" id="id-dob">—</span></div>
+            <div class="span-4 id-field"><span class="k">Assigned clinician</span><span class="v" id="id-clinician">&mdash;</span></div>
+          </div>
+          <button class="btn btn-block" id="checkin" style="margin-top:var(--space-xl);background:#fff;color:var(--primary)"><span class="material-symbols-outlined">contactless</span>Transmit check-in pass</button>
+        </div>
+
+        <!-- Contact + medical info (editable) -->
+        <div class="span-5 card">
+          <div class="card-header"><span class="card-title">Contact &amp; medical info</span></div>
+          <form id="profile-form" novalidate>
+            <div class="field">
+              <label class="field-label required" for="pf-phone">Contact phone</label>
+              <input class="input" id="pf-phone" type="tel" data-type="phone" required placeholder="(415) 555-0100" />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="pf-allergies">Known allergies</label>
+              <input class="input" id="pf-allergies" type="text" data-maxlen="120" placeholder="e.g. Penicillin, Latex" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="pf-alerts">Care alerts</label>
+              <input class="input" id="pf-alerts" type="text" data-maxlen="120" placeholder="e.g. Hypertension watch" />
+            </div>
+            <p class="required-note">Required fields</p>
+            <button class="btn btn-primary btn-block" type="submit" style="margin-top:var(--space-sm)"><span class="material-symbols-outlined">save</span>Save changes</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/qr.js"></script>
+  <script src="../assets/js/pages/patient-profile.js"></script>
+</body>
+</html>

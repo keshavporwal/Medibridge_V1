@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Vault — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="patient-hub.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Health Hub</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <a class="profile-link" href="patient-profile.html" title="Your profile">
+            <div class="profile-meta">
+              <span class="profile-name" data-user-name>Patient</span>
+              <span class="label-sm muted" data-user-title>Patient</span>
+            </div>
+            <div class="avatar" data-avatar>MC</div>
+          </a>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="patient-hub.html"><span class="material-symbols-outlined">home</span>Health Hub</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Document Vault</span>
+      </nav>
+      <div class="page-header">
+        <h1 class="page-title">Document Vault</h1>
+        <p class="page-subtitle">Your private, encrypted health records. You control who sees them.</p>
+      </div>
+
+      <div class="bento">
+        <!-- Upload + documents -->
+        <div class="span-8 col gap-lg">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Upload records</span></div>
+            <div class="file-drop" id="drop-zone" tabindex="0" role="button" aria-label="Upload files">
+              <span class="material-symbols-outlined">cloud_upload</span>
+              <span class="strong">Drag &amp; drop files here, or click to browse</span>
+              <span class="body-sm muted">PDF, images, or lab reports</span>
+            </div>
+            <input type="file" id="file-input" multiple hidden />
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">My documents</span>
+              <span class="label-sm muted" id="doc-count"></span>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>File</th><th>Type</th><th class="num">Size</th><th>Uploaded</th><th></th></tr></thead>
+                <tbody id="docs-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Access grants + requests -->
+        <div class="span-4 col gap-lg">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Pending requests</span></div>
+            <div id="pending-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Active access</span></div>
+            <div id="grants-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Grant Access modal (shared markup) ===== -->
+  <div class="modal-overlay" id="grant-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="grant-title">
+      <div class="modal-header">
+        <div class="row gap-sm">
+          <span class="stat-icon"><span class="material-symbols-outlined">shield_person</span></span>
+          <div>
+            <h2 class="modal-title" id="grant-title">Grant Document Access</h2>
+            <p class="modal-desc">Choose exactly which records to share and for how long.</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="grant-form" novalidate>
+        <div class="modal-body">
+          <div class="notice" style="margin-bottom:var(--space-base)">
+            <span class="material-symbols-outlined">mail</span>
+            <div><div class="strong" id="grant-doctor">Doctor's request</div><p class="body-sm muted" id="grant-message"></p></div>
+          </div>
+          <span class="field-label required">Select records to share</span>
+          <div class="col gap-sm" id="grant-docs" style="margin:var(--space-xs) 0 var(--space-base)"></div>
+          <span class="field-error" id="grant-docs-error"></span>
+          <div class="field">
+            <label class="field-label required" for="grant-duration">Access duration</label>
+            <select class="select" id="grant-duration" required>
+              <option value="30 Days" selected>30 Days</option>
+              <option value="90 Days">90 Days</option>
+              <option value="Until Revoked">Until Revoked</option>
+            </select>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">lock</span><span>Authorize access</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/doc-preview.js"></script>
+  <script src="../assets/js/pages/patient-vault.js"></script>
+</body>
+</html>

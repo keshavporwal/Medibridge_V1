@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Schedule — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="doctor-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Clinical Care Grid</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Doctor</span>
+            <span class="label-sm muted" data-user-title>Cardiology / Attending</span>
+          </div>
+          <div class="avatar" data-avatar>EV</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="doctor-dashboard.html"><span class="material-symbols-outlined">home</span>Workspace</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Weekly Schedule</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Weekly Schedule</h1>
+          <p class="page-subtitle" id="week-label">This week</p>
+        </div>
+        <div class="row gap-sm">
+          <button class="icon-btn" id="week-prev" aria-label="Previous week"><span class="material-symbols-outlined">chevron_left</span></button>
+          <button class="btn btn-ghost btn-sm" id="week-today">This week</button>
+          <button class="icon-btn" id="week-next" aria-label="Next week"><span class="material-symbols-outlined">chevron_right</span></button>
+          <button class="btn btn-primary" id="btn-availability"><span class="material-symbols-outlined">schedule</span>Set Availability</button>
+        </div>
+      </div>
+
+      <div class="bento">
+        <div class="span-8 card">
+          <div class="card-header">
+            <span class="card-title">Consult Timeline</span>
+            <span class="label-sm muted">8:00 – 18:00</span>
+          </div>
+          <div id="week-gantt"></div>
+        </div>
+        <div class="span-4 card">
+          <div class="card-header"><span class="card-title">Next Up</span></div>
+          <div id="queue"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Set Availability modal (shared markup) ===== -->
+  <div class="modal-overlay" id="avail-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="av-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="av-title">Set Weekly Availability</h2>
+          <p class="modal-desc">Define working hours, active shifts, and lunch buffers.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="avail-form" novalidate>
+        <div class="modal-body">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Day</th><th>Active</th><th>Start</th><th>End</th><th>Lunch</th></tr></thead>
+              <tbody id="avail-body"></tbody>
+            </table>
+          </div>
+          <span class="field-error" id="avail-error" style="margin-top:var(--space-sm)"></span>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">save</span><span>Save availability</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/doctor-schedule-weekly.js"></script>
+</body>
+</html>

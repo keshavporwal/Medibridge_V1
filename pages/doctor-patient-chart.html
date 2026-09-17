@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Record — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="doctor-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Clinical Care Grid</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Doctor</span>
+            <span class="label-sm muted" data-user-title>Cardiology / Attending</span>
+          </div>
+          <div class="avatar" data-avatar>EV</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="doctor-dashboard.html"><span class="material-symbols-outlined">home</span>Workspace</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Patient Record</span>
+      </nav>
+
+      <!-- Patient header -->
+      <div class="card" style="margin-bottom:var(--space-lg)">
+        <div class="row-between wrap gap-md">
+          <div class="row gap-md">
+            <div class="avatar" id="pt-initials" style="width:56px;height:56px;font:var(--headline-md)">--</div>
+            <div class="col gap-xs">
+              <h1 class="headline-lg" id="pt-name">Patient</h1>
+              <div class="row gap-sm wrap">
+                <span class="chip"><span class="material-symbols-outlined">badge</span><span id="pt-mrn">MRN</span></span>
+                <span class="chip"><span class="material-symbols-outlined">cake</span><span id="pt-dob">DOB</span></span>
+                <span class="badge badge-danger" id="pt-allergy"><span class="dot"></span>Allergies</span>
+                <span class="badge badge-warning" id="pt-alert"><span class="dot"></span>Alert</span>
+              </div>
+            </div>
+          </div>
+          <div class="row gap-sm">
+            <button class="btn btn-secondary" id="btn-note"><span class="material-symbols-outlined">note_add</span>Log note</button>
+            <button class="btn btn-primary" id="btn-docrequest"><span class="material-symbols-outlined">post_add</span>Request Document</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento">
+        <div class="span-4 col gap-lg">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Summary</span></div>
+            <div class="list" id="summary"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Shared Documents</span><span class="material-symbols-outlined muted">lock</span></div>
+            <div id="shared-docs"></div>
+          </div>
+        </div>
+
+        <div class="span-8 col gap-lg">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Consultation History</span></div>
+            <div class="timeline" id="history"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Log Consultation Note</span></div>
+            <form id="note-form" novalidate>
+              <div class="field">
+                <label class="field-label required" for="note-text">Visit note</label>
+                <textarea class="textarea" id="note-text" data-min="5" data-maxlen="1000" required placeholder="Document the consultation, assessment, and plan..."></textarea>
+                <span class="field-error"></span>
+              </div>
+              <p class="required-note">Required fields</p>
+              <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">save</span>Save note</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Document Request modal (shared markup) ===== -->
+  <div class="modal-overlay" id="docreq-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="dr-title">
+      <div class="modal-header">
+        <div class="row gap-sm">
+          <span class="stat-icon"><span class="material-symbols-outlined">post_add</span></span>
+          <div>
+            <h2 class="modal-title" id="dr-title">Request Clinical Document</h2>
+            <p class="modal-desc">Ask the patient to share specific records. You cannot browse their vault.</p>
+          </div>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="docreq-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label" for="dr-patient-label">Patient</label>
+            <input class="input" id="dr-patient-label" type="text" disabled />
+          </div>
+          <div class="field">
+            <label class="field-label required" for="dr-message">Instructions to patient</label>
+            <textarea class="textarea" id="dr-message" data-min="5" data-maxlen="500" required placeholder="e.g. Please share any cardiology ECG traces or lipid panels from the past 6 months."></textarea>
+            <span class="field-error"></span>
+          </div>
+          <div class="notice">
+            <span class="material-symbols-outlined">verified_user</span>
+            <p class="body-sm muted">The patient explicitly selects which files to share. Nothing is accessed without consent.</p>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">send</span><span>Send request</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/doc-preview.js"></script>
+  <script src="../assets/js/pages/doctor-patient-chart.js"></script>
+</body>
+</html>

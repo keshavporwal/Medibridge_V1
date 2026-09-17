@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinics Directory — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="admin-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Institute Operations</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Admin</span>
+            <span class="label-sm muted" data-user-title>Operations Lead</span>
+          </div>
+          <div class="avatar" data-avatar>PA</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="admin-dashboard.html"><span class="material-symbols-outlined">home</span>Operations</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Clinics</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Enrolled Clinics &amp; Facilities</h1>
+          <p class="page-subtitle">Master directory of affiliated healthcare centers.</p>
+        </div>
+        <button class="btn btn-primary" id="btn-enroll"><span class="material-symbols-outlined">domain_add</span>Enroll New Clinic</button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Clinic</th><th>Specialty</th><th>Clinic code</th><th>Address</th><th class="num">Staff</th><th>Status</th></tr></thead>
+            <tbody id="clinics-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Enroll New Clinic modal ===== -->
+  <div class="modal-overlay" id="enroll-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="en-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="en-title">Enroll New Clinic</h2>
+          <p class="modal-desc">Provision a new affiliated facility.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="enroll-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label required" for="en-name">Clinic name</label>
+            <input class="input" id="en-name" type="text" data-min="2" data-maxlen="80" required placeholder="Lakeside Cardiology" />
+            <span class="field-error"></span>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="en-specialty">Medical specialty / focus</label>
+            <select class="select" id="en-specialty" required>
+              <option value="Cardiology" selected>Cardiology</option>
+              <option value="Family Medicine">Family Medicine</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="General Practice">General Practice</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="en-address">Address</label>
+            <input class="input" id="en-address" type="text" data-min="5" data-maxlen="140" required placeholder="123 Market St, San Francisco, CA" />
+            <span class="field-error"></span>
+          </div>
+          <div class="notice">
+            <span class="material-symbols-outlined">key</span>
+            <p class="body-sm muted">A unique clinic code is generated on enrollment. Share it with doctors and staff so they can link their new accounts to this clinic.</p>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">add_business</span><span>Enroll clinic</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/admin-clinics.js"></script>
+</body>
+</html>

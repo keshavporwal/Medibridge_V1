@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patients — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="doctor-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Clinical Care Grid</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Doctor</span>
+            <span class="label-sm muted" data-user-title>Cardiology / Attending</span>
+          </div>
+          <div class="avatar" data-avatar>EV</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="doctor-dashboard.html"><span class="material-symbols-outlined">home</span>Workspace</a>
+        <span class="material-symbols-outlined sep">chevron_right</span>
+        <span class="current">Patients</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Patient Directory</h1>
+          <p class="page-subtitle">Search and open any patient's clinical record.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">All Patients</span>
+          <div class="input-group" style="max-width:280px">
+            <input class="input" id="search" type="search" placeholder="Search name or MRN" aria-label="Search patients" />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Patient</th><th>MRN</th><th>Date of birth</th><th>Allergies</th><th></th></tr></thead>
+            <tbody id="patients-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/doctor-patients.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shared Patient Pass — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+  <style>
+    .idpass { background: linear-gradient(135deg, var(--primary), var(--primary-container)); color: #fff; border: none; }
+    .idpass .id-photo { width: 72px; height: 72px; border-radius: var(--radius-md); background: rgba(255,255,255,.18); display: grid; place-items: center; font: var(--headline-lg); flex: none; }
+    .id-field { display: flex; flex-direction: column; gap: 2px; }
+    .id-field .k { font: var(--label-sm); text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+    .id-field .v { font: var(--headline-sm); }
+    .share-wrap { min-height: calc(100vh - var(--topnav-h)); display: grid; place-items: center; padding: var(--space-2xl) var(--space-base); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <a class="brand" href="login.html">
+        <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+        <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Shared Patient Pass</span></span>
+      </a>
+      <a class="btn btn-secondary" href="login.html">Sign in</a>
+    </header>
+
+    <main class="share-wrap">
+      <!-- Found: read-only pass -->
+      <div id="pass-found" class="hidden" style="width:100%;max-width:560px">
+        <div class="card idpass">
+          <div class="row-between">
+            <div class="row gap-md">
+              <div class="id-photo" id="pass-initials">--</div>
+              <div class="col gap-xs">
+                <span class="headline-lg" id="pass-name">Patient</span>
+                <span class="badge" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:#fff"><span class="dot"></span>Shared Pass · Read-only</span>
+              </div>
+            </div>
+          </div>
+          <div class="bento" style="margin-top:var(--space-xl);gap:var(--space-lg)">
+            <div class="span-4 id-field"><span class="k">MRN</span><span class="v" id="pass-mrn">—</span></div>
+            <div class="span-4 id-field"><span class="k">Date of birth</span><span class="v" id="pass-dob">—</span></div>
+            <div class="span-4 id-field"><span class="k">Phone</span><span class="v" id="pass-phone">—</span></div>
+            <div class="span-6 id-field"><span class="k">Allergies</span><span class="v" id="pass-allergies">—</span></div>
+            <div class="span-6 id-field"><span class="k">Care alerts</span><span class="v" id="pass-alerts">—</span></div>
+            <div class="span-12 id-field"><span class="k">Assigned clinician</span><span class="v" id="pass-clinician">—</span></div>
+          </div>
+        </div>
+        <div class="notice" style="margin-top:var(--space-lg)">
+          <span class="material-symbols-outlined">info</span>
+          <p class="body-sm muted">This is a read-only pass shared via a MediBridge QR code — no sign-in required. Generated <span id="pass-timestamp"></span>. Viewable on this device; deploying MediBridge with a shared database would make this link work from any device.</p>
+        </div>
+      </div>
+
+      <!-- Not found -->
+      <div id="pass-notfound" class="hidden" style="width:100%;max-width:440px">
+        <div class="card" style="text-align:center">
+          <div class="empty-state">
+            <span class="material-symbols-outlined">qr_code_2</span>
+            <p class="strong">This shared pass couldn't be found.</p>
+            <p class="body-sm muted">The link may be invalid, or it points to a patient record that only exists in a different browser or device (MediBridge currently stores data locally, per browser).</p>
+          </div>
+          <a class="btn btn-primary" href="login.html">Go to sign in</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/pages/patient-share.js"></script>
+</body>
+</html>

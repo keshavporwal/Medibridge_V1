@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Setup — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <header class="topnav">
+    <a class="brand" href="login.html">
+      <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+      <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Unified Clinical Platform</span></span>
+    </a>
+    <div class="stepper" style="margin:0">
+      <div class="step done"><span class="step-dot"><span class="material-symbols-outlined" style="font-size:16px">check</span></span><span class="label-md">Account</span></div>
+      <span class="step-line"></span>
+      <div class="step active"><span class="step-dot">2</span><span class="label-md">Security</span></div>
+      <span class="step-line"></span>
+      <div class="step"><span class="step-dot">3</span><span class="label-md">Access</span></div>
+    </div>
+  </header>
+
+  <main style="display:grid;place-items:center;padding:var(--space-2xl) var(--space-base)">
+    <div style="max-width:640px;width:100%">
+      <div class="card">
+        <span class="badge badge-primary"><span class="material-symbols-outlined" style="font-size:14px">lock_reset</span>Step 2 of 2 · Recovery Setup</span>
+        <h1 class="headline-lg" style="margin:var(--space-sm) 0 var(--space-xs)">Set 3 Security Questions</h1>
+        <p class="body-sm muted">Used to verify your identity if you ever lose access to your email or password. Answers are hashed with SHA-256 and salted — never stored as plain text.</p>
+
+        <div class="card card-pad-sm" style="background:var(--surface-container-low);border:none;margin:var(--space-base) 0">
+          <div class="row gap-sm">
+            <div class="avatar" id="acct-initials">--</div>
+            <div class="col"><span class="label-sm muted">Enrolling account</span><span class="strong" id="acct-email">—</span></div>
+            <span class="spacer"></span>
+            <span class="badge badge-primary" id="acct-role">Patient</span>
+          </div>
+        </div>
+
+        <form id="sec-form" novalidate>
+          <div class="field">
+            <label class="field-label required" for="q1">Primary security question</label>
+            <select class="select" id="q1" required>
+              <option value="q1a" selected>What was the name of your first elementary school?</option>
+              <option value="q1b">In what city was your first clinical rotation or internship?</option>
+              <option value="q1c">What was your maternal grandmother's maiden surname?</option>
+              <option value="q1d">What was the model and color of your first car?</option>
+              <option value="q1e">What was the name of your first childhood pet?</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="a1">Your answer</label>
+            <input class="input" id="a1" type="text" data-min="2" data-maxlen="60" required placeholder="Type your confidential answer" autocomplete="off" />
+            <span class="field-error"></span>
+          </div>
+
+          <hr class="divider-h" />
+
+          <div class="field">
+            <label class="field-label required" for="q2">Secondary security question</label>
+            <select class="select" id="q2" required>
+              <option value="q2a" selected>In what city did your parents first meet?</option>
+              <option value="q2b">What was your first job title?</option>
+              <option value="q2c">What was the name of the hospital where you were born?</option>
+              <option value="q2d">What was the street name of your first home?</option>
+              <option value="q2e">What is the middle name of your oldest sibling?</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="a2">Your answer</label>
+            <input class="input" id="a2" type="text" data-min="2" data-maxlen="60" required placeholder="Type your confidential answer" autocomplete="off" />
+            <span class="field-error"></span>
+          </div>
+
+          <hr class="divider-h" />
+
+          <div class="field">
+            <label class="field-label required" for="q3">Third verification question</label>
+            <select class="select" id="q3" required>
+              <option value="q3a" selected>What was the full name of your favorite teacher?</option>
+              <option value="q3b">In what city was your first professional conference?</option>
+              <option value="q3c">What is the title of your favorite book?</option>
+              <option value="q3d">What was the name of your first college dorm?</option>
+              <option value="q3e">What was your childhood dream profession?</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="a3">Your answer</label>
+            <input class="input" id="a3" type="text" data-min="2" data-maxlen="60" required placeholder="Type your confidential answer" autocomplete="off" />
+            <span class="field-error"></span>
+          </div>
+
+          <div class="notice" style="margin:var(--space-base) 0">
+            <span class="material-symbols-outlined">verified_user</span>
+            <p class="body-sm muted">End-to-end cryptographic protection. MediBridge administrators cannot read your raw answers.</p>
+          </div>
+
+          <p class="required-note">Required fields</p>
+
+          <div class="row-between" style="margin-top:var(--space-base)">
+            <a class="btn btn-secondary" href="login.html"><span class="material-symbols-outlined">arrow_back</span>Back</a>
+            <button class="btn btn-primary" type="submit"><span>Save &amp; enter workspace</span><span class="material-symbols-outlined">arrow_forward</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/register-security.js"></script>
+</body>
+</html>

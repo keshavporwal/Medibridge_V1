@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Front Desk — MediBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topnav">
+      <div class="row">
+        <a class="brand" href="receptionist-dashboard.html">
+          <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Intake &amp; Triage</span></span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="badge-dot hidden" id="notif-count">0</span>
+        </button>
+        <div class="profile">
+          <div class="profile-meta">
+            <span class="profile-name" data-user-name>Reception</span>
+            <span class="label-sm muted" data-user-title>Intake Coordinator</span>
+          </div>
+          <div class="avatar" data-avatar>SR</div>
+          <button class="icon-btn" data-logout aria-label="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span class="current"><span class="material-symbols-outlined">home</span>Dashboard</span>
+      </nav>
+      <div class="page-header row-between">
+        <div>
+          <h1 class="page-title">Intake Command Center</h1>
+          <p class="page-subtitle">Review requests, match availability, and schedule visits.</p>
+        </div>
+        <a class="btn btn-secondary" href="receptionist-patients.html"><span class="material-symbols-outlined">groups</span>Patients</a>
+      </div>
+
+      <!-- KPIs -->
+      <div class="bento" style="margin-bottom:var(--space-lg)">
+        <button type="button" class="span-4 card kpi-card" id="kpi-card-today" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon"><span class="material-symbols-outlined">event_available</span></span>
+            <span class="stat-value" id="kpi-today">0</span><span class="stat-label">Scheduled today</span>
+          </div>
+        </button>
+        <button type="button" class="span-4 card kpi-card" id="kpi-card-pending" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--warning-surface);color:var(--warning)"><span class="material-symbols-outlined">pending_actions</span></span>
+            <span class="stat-value" id="kpi-pending">0</span><span class="stat-label">Pending requests</span>
+          </div>
+        </button>
+        <button type="button" class="span-4 card kpi-card" id="kpi-card-oncall" aria-haspopup="dialog" aria-expanded="false">
+          <span class="stat-hint material-symbols-outlined" aria-hidden="true">arrow_forward_ios</span>
+          <div class="stat">
+            <span class="stat-icon" style="background:var(--success-surface);color:var(--success)"><span class="material-symbols-outlined">stethoscope</span></span>
+            <span class="stat-value" id="kpi-oncall">0</span><span class="stat-label">Doctors on duty</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="bento">
+        <!-- Pending requests queue -->
+        <div class="span-8 card">
+          <div class="card-header">
+            <span class="card-title">Pending Appointment Requests</span>
+            <span class="label-sm muted">Patient-submitted</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Patient</th><th>Preferred provider</th><th>Requested window</th><th>Reason</th><th></th></tr></thead>
+              <tbody id="requests-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Doctor availability roster -->
+        <div class="span-4 card">
+          <div class="card-header"><span class="card-title">Doctor Availability</span></div>
+          <div class="list" id="doctor-roster"></div>
+        </div>
+
+        <!-- Today's schedule -->
+        <div class="span-12 card">
+          <div class="card-header">
+            <span class="card-title">Today's Schedule</span>
+            <span class="label-sm muted" id="today-label"></span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Time</th><th>Patient</th><th>MRN</th><th>Provider</th><th>Type</th><th>Status</th></tr></thead>
+              <tbody id="today-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Review & Schedule modal ===== -->
+  <div class="modal-overlay" id="schedule-modal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="sched-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="sched-title">Review &amp; Schedule Request</h2>
+          <p class="modal-desc">Confirm a slot against the clinician's availability.</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="schedule-form" novalidate>
+        <div class="modal-body">
+          <!-- Request summary -->
+          <div class="card card-pad-sm" style="background:var(--surface-container-low);border:none;margin-bottom:var(--space-base)">
+            <div class="row-between">
+              <div class="row gap-sm">
+                <div class="avatar" id="sched-avatar">--</div>
+                <div class="col">
+                  <span class="strong" id="sched-patient">Patient</span>
+                  <span class="list-sub" id="sched-mrn">MRN</span>
+                </div>
+              </div>
+              <span class="badge badge-warning" id="sched-window">Window</span>
+            </div>
+            <p class="body-sm muted" style="margin-top:var(--space-sm)"><span class="strong">Reason:</span> <span id="sched-reason"></span></p>
+            <p class="body-sm muted"><span class="strong">Preferred:</span> <span id="sched-preferred"></span></p>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label required" for="sched-doctor">Assign clinician</label>
+              <select class="select" id="sched-doctor" required></select>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="sched-type">Visit type</label>
+              <select class="select" id="sched-type" required>
+                <option value="In-person" selected>In-person</option>
+                <option value="Telehealth">Telehealth</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="sched-date">Confirmed date</label>
+              <input class="input" id="sched-date" type="date" required />
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label class="field-label required" for="sched-time">Confirmed time</label>
+              <select class="select" id="sched-time" required></select>
+            </div>
+          </div>
+          <p class="required-note">Required fields</p>
+        </div>
+        <div class="modal-footer between">
+          <span class="row gap-xs muted body-sm"><span class="material-symbols-outlined" style="font-size:16px">send</span>Patient is auto-notified on confirm</span>
+          <div class="row gap-md">
+            <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+            <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">check</span><span>Confirm &amp; schedule</span></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Doctor schedule (read-only inspect) modal ===== -->
+  <div class="modal-overlay" id="docsched-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="docsched-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="docsched-title">Doctor Schedule</h2>
+          <p class="modal-desc" id="docsched-sub">Weekly availability</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Day</th><th>Hours</th><th>Break</th><th>Status</th></tr></thead>
+            <tbody id="docsched-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" type="button" data-close>Close</button></div>
+    </div>
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/pages/receptionist-dashboard.js"></script>
+</body>
+</html>
