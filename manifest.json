@@ -1,0 +1,57 @@
+{
+  "name": "MediBridge — Clinical Coordination & Operations Platform",
+  "short_name": "MediBridge",
+  "description": "Unified healthcare coordination platform connecting institutes, doctors, receptionists, and patients with smart scheduling and clinical governance.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f9ff",
+  "theme_color": "#004ac6",
+  "categories": ["medical", "health", "productivity", "business"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Institute Operations",
+      "url": "/institute/operations",
+      "description": "Access clinical command center and enrolled clinics"
+    },
+    {
+      "name": "Doctor Workspace",
+      "url": "/doctor/workspace",
+      "description": "Open physician appointments, consultations, and patient queue"
+    },
+    {
+      "name": "Receptionist Dashboard",
+      "url": "/receptionist/dashboard",
+      "description": "Manage appointment triage and daily scheduling"
+    },
+    {
+      "name": "Patient Health Hub",
+      "url": "/patient/hub",
+      "description": "View care timeline, appointments, and record vault"
+    }
+  ]
+}

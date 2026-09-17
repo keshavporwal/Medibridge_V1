@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediBridge</title>
+  <script>
+    // Entry point: route to the right place based on session.
+    (function () {
+      try {
+        var s = JSON.parse(sessionStorage.getItem('medibridge.session.v1') || localStorage.getItem('medibridge.session.v1'));
+        var home = { admin: 'pages/admin-dashboard.html', doctor: 'pages/doctor-dashboard.html', receptionist: 'pages/receptionist-dashboard.html', patient: 'pages/patient-hub.html' };
+        location.replace(s && home[s.role] ? home[s.role] : 'pages/landing.html');
+      } catch (e) { location.replace('pages/landing.html'); }
+    })();
+  </script>
+</head>
+<body></body>
+</html>

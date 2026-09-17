@@ -1,0 +1,17 @@
+<!doctype html><meta charset=utf-8>
+<body style="margin:0;font-family:Inter,system-ui;background:#eef2f9;padding:24px;display:flex;gap:24px;align-items:flex-start">
+  <div style="background:#004ac6;border-radius:16px;padding:20px;color:#fff;width:230px;text-align:center">
+    <div style="font-weight:600;margin-bottom:12px">Patient ID pass</div>
+    <div id="qr" style="background:#fff;padding:8px;border-radius:12px;display:inline-block"></div>
+    <div style="font-size:11px;opacity:.85;margin-top:8px">Scan to open shared pass</div>
+  </div>
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px">
+    <div style="font-size:12px;color:#64748b;margin-bottom:8px">Plain (before)</div>
+    <div id="qrold" style="display:inline-block"></div>
+  </div>
+<script src="assets/js/qr.js"></script>
+<script>
+  var url = location.origin + "/pages/patient-share.html?pid=PT-00042";
+  document.getElementById('qr').innerHTML = QR.svg(url, { px:150, margin:4, style:'rounded', gradient:{from:'#0b1c30',to:'#004ac6'} });
+  document.getElementById('qrold').innerHTML = QR.svg(url, { px:150, margin:4 });
+</script>
