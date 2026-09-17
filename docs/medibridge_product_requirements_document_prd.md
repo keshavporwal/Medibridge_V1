@@ -5,7 +5,7 @@
 **Category:** Healthcare Coordination & Clinical Operations SaaS  
 **Target Form Factor:** Desktop-first Web Application  
 **Primary Design System:** Clinical Coordination & Operations (Light Theme, Inter, Royal Blue `#004ac6` / `#2563eb`, Clean Slate Neutrals)  
-**Security & Compliance:** HIPAA compliant, SOC-2 ready, Zero-Knowledge cryptographic hashing (SHA-256 for recovery questions)
+**Security & Compliance:** SOC-2 ready, Zero-Knowledge cryptographic hashing (SHA-256 for recovery questions)
 
 ---
 

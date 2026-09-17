@@ -17,12 +17,12 @@
     return d.toISOString().slice(0, 10);
   }
 
-  /* ---- Seed: only a default institute admin. All other data is created
+  /* ---- Seed: only a default admin. All other data is created
      through real usage; admins cannot self-register. ---------------------- */
   function seed() {
     return {
       users: [
-        { id: 'u_admin', name: 'Institute Administrator', email: 'admin@medibridge.health', password: 'Admin@123', role: 'admin', title: 'Institute Administrator' }
+        { id: 'u_admin', name: 'Admin', email: 'admin@medibridge.health', password: 'Admin@123', role: 'admin', title: 'Admin' }
       ],
       clinics: [], staff: [], doctors: [], patients: [],
       appointments: [], appointmentRequests: [], documentRequests: [],

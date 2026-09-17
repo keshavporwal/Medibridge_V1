@@ -9,7 +9,9 @@
 
   document.getElementById('id-mrn').textContent = patient.mrn || '—';
   document.getElementById('id-dob').textContent = patient.dob ? UI.fmtDate(patient.dob) : '—';
+  document.getElementById('pf-country-code').value = patient.countryCode || '+91';
   document.getElementById('pf-phone').value = patient.phone || '';
+  document.getElementById('pf-dob').value = patient.dob || '';
   document.getElementById('pf-allergies').value = patient.allergies || '';
   document.getElementById('pf-alerts').value = patient.alerts || '';
 
@@ -53,11 +55,21 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!UI.validate(form)) return;
+    var dobVal = document.getElementById('pf-dob').value;
+    var countryCodeVal = document.getElementById('pf-country-code').value.trim();
+    var phoneVal = document.getElementById('pf-phone').value.trim();
+    var allergiesVal = document.getElementById('pf-allergies').value.trim();
+    var alertsVal = document.getElementById('pf-alerts').value.trim();
+
     Store.update('patients', patientId, {
-      phone: document.getElementById('pf-phone').value.trim(),
-      allergies: document.getElementById('pf-allergies').value.trim(),
-      alerts: document.getElementById('pf-alerts').value.trim()
+      countryCode: countryCodeVal,
+      phone: phoneVal,
+      dob: dobVal,
+      allergies: allergiesVal,
+      alerts: alertsVal
     });
+
+    document.getElementById('id-dob').textContent = dobVal ? UI.fmtDate(dobVal) : '—';
     renderQR();
     UI.toast('Your profile was updated.', 'success', 'Saved');
   });

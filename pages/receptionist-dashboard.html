@@ -102,7 +102,7 @@
           </div>
           <div class="table-wrap">
             <table class="data-table">
-              <thead><tr><th>Time</th><th>Patient</th><th>MRN</th><th>Provider</th><th>Type</th><th>Status</th></tr></thead>
+              <thead><tr><th>Time</th><th>Patient</th><th>MRN</th><th>Provider</th><th>Status</th><th class="num">Actions</th></tr></thead>
               <tbody id="today-body"></tbody>
             </table>
           </div>
@@ -145,13 +145,6 @@
               <select class="select" id="sched-doctor" required></select>
             </div>
             <div class="field">
-              <label class="field-label required" for="sched-type">Visit type</label>
-              <select class="select" id="sched-type" required>
-                <option value="In-person" selected>In-person</option>
-                <option value="Telehealth">Telehealth</option>
-              </select>
-            </div>
-            <div class="field">
               <label class="field-label required" for="sched-date">Confirmed date</label>
               <input class="input" id="sched-date" type="date" required />
               <span class="field-error"></span>
@@ -169,6 +162,37 @@
             <button class="btn btn-secondary" type="button" data-close>Cancel</button>
             <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">check</span><span>Confirm &amp; schedule</span></button>
           </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Reschedule Appointment Modal ===== -->
+  <div class="modal-overlay" id="reschedule-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resched-title">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="resched-title">Reschedule Appointment</h2>
+          <p class="modal-desc" id="resched-sub">Select new date &amp; time slot</p>
+        </div>
+        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="reschedule-form" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label class="field-label required" for="resched-date">New Date</label>
+            <input class="input" id="resched-date" type="date" required />
+            <span class="field-error"></span>
+          </div>
+          <div class="field">
+            <label class="field-label required" for="resched-time">New Time</label>
+            <select class="select" id="resched-time" required></select>
+            <span class="field-error"></span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="submit">Reschedule</button>
         </div>
       </form>
     </div>

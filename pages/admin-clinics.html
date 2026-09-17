@@ -17,7 +17,7 @@
       <div class="row">
         <a class="brand" href="admin-dashboard.html">
           <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
-          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Institute Operations</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Admin Operations</span></span>
         </a>
       </div>
       <div class="nav-actions">
@@ -47,11 +47,30 @@
       </div>
 
       <div class="card">
+        <div class="card-header row-between wrap gap-md">
+          <span class="card-title">Clinics Directory</span>
+          <div class="row gap-sm wrap">
+            <input class="input" id="search-clinics" type="search" placeholder="Search clinic name or code..." style="max-width:240px" />
+            <select class="select" id="status-filter" style="max-width:160px">
+              <option value="all" selected>All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="On Leave">On Leave</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
         <div class="table-wrap">
           <table class="data-table">
             <thead><tr><th>Clinic</th><th>Specialty</th><th>Clinic code</th><th>Address</th><th class="num">Staff</th><th>Status</th></tr></thead>
             <tbody id="clinics-body"></tbody>
           </table>
+        </div>
+        <div class="card-footer row-between" style="padding:var(--space-md)">
+          <span class="body-sm muted" id="page-info">Showing 0 of 0</span>
+          <div class="row gap-xs">
+            <button class="btn btn-ghost btn-sm" id="btn-prev" disabled>Previous</button>
+            <button class="btn btn-ghost btn-sm" id="btn-next" disabled>Next</button>
+          </div>
         </div>
       </div>
     </main>
@@ -71,7 +90,7 @@
         <div class="modal-body">
           <div class="field">
             <label class="field-label required" for="en-name">Clinic name</label>
-            <input class="input" id="en-name" type="text" data-min="2" data-maxlen="80" required placeholder="Lakeside Cardiology" />
+            <input class="input" id="en-name" type="text" data-min="2" data-maxlen="80" required placeholder="Apollo Health Hub, Bengaluru" />
             <span class="field-error"></span>
           </div>
           <div class="field">
@@ -87,7 +106,7 @@
           </div>
           <div class="field">
             <label class="field-label required" for="en-address">Address</label>
-            <input class="input" id="en-address" type="text" data-min="5" data-maxlen="140" required placeholder="123 Market St, San Francisco, CA" />
+            <input class="input" id="en-address" type="text" data-min="5" data-maxlen="140" required placeholder="MG Road, Bengaluru, Karnataka" />
             <span class="field-error"></span>
           </div>
           <div class="notice">
