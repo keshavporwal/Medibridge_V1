@@ -5,10 +5,43 @@
   if (!session) return;
   UI.mountChrome(session);
 
-  var SLOTS = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
+  var SLOTS = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
 
-  function slotOptions(selected) {
-    return SLOTS.map(function (s) {
+  function getAvailableSlots(doctorId, dateISO) {
+    if (!doctorId || !dateISO) return SLOTS;
+    var d = new Date(dateISO + 'T00:00:00');
+    var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var dayName = dayNames[d.getDay()];
+    var week = Store.getAvailability(doctorId);
+    var dayAvail = week[dayName];
+
+    var lunchStart = '12:30', lunchEnd = '13:30';
+    var start = '08:00', end = '17:00';
+
+    if (dayAvail) {
+      if (dayAvail.active === false) return [];
+      if (dayAvail.start) start = dayAvail.start;
+      if (dayAvail.end) end = dayAvail.end;
+      if (dayAvail.lunch && dayAvail.lunch.indexOf('-') > -1) {
+        var lp = dayAvail.lunch.split('-');
+        lunchStart = lp[0].trim();
+        lunchEnd = lp[1].trim();
+      }
+    }
+
+    return SLOTS.filter(function (slot) {
+      if (slot < start || slot >= end) return false;
+      if (slot >= lunchStart && slot < lunchEnd) return false;
+      return true;
+    });
+  }
+
+  function slotOptions(selected, doctorId, dateISO) {
+    var avail = getAvailableSlots(doctorId, dateISO);
+    if (!avail.length) {
+      return '<option value="">No available slots for this date/doctor</option>';
+    }
+    return avail.map(function (s) {
       return '<option value="' + s + '"' + (s === selected ? ' selected' : '') + '>' + UI.fmtTime(s) + '</option>';
     }).join('');
   }
@@ -67,6 +100,8 @@
     });
   }
 
+  var activeReschedAppt = null;
+
   function renderToday() {
     var today = Store.todayISO(0);
     document.getElementById('today-label').textContent = UI.fmtDate(today);
@@ -75,11 +110,75 @@
     var body = document.getElementById('today-body');
     if (!appts.length) { body.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="material-symbols-outlined">event_busy</span><p>Nothing scheduled today yet.</p></div></td></tr>'; return; }
     body.innerHTML = appts.map(function (a) {
+      var isCancelled = a.status === 'Cancelled';
       return '<tr><td class="strong">' + UI.fmtTime(a.time) + '</td><td>' + UI.esc(a.patientName) + '</td>' +
         '<td>' + UI.esc(a.mrn || '') + '</td><td>' + UI.esc(a.doctorName) + '</td>' +
-        '<td><span class="badge ' + (a.type === 'Telehealth' ? 'badge-info' : 'badge-neutral') + '">' + UI.esc(a.type) + '</span></td>' +
-        '<td><span class="badge badge-success"><span class="dot"></span>' + UI.esc(a.status) + '</span></td></tr>';
+        '<td><span class="badge ' + (isCancelled ? 'badge-danger' : 'badge-success') + '"><span class="dot"></span>' + UI.esc(a.status) + '</span></td>' +
+        '<td class="num">' +
+          (isCancelled ? '<span class="muted body-sm">Cancelled</span>' :
+            '<div class="row gap-xs justify-end">' +
+              '<button class="btn btn-ghost btn-sm" data-resched="' + a.id + '">Reschedule</button>' +
+              '<button class="btn btn-ghost btn-sm text-danger" data-cancel="' + a.id + '">Cancel</button>' +
+            '</div>') +
+        '</td></tr>';
     }).join('');
+
+    body.querySelectorAll('[data-cancel]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = b.getAttribute('data-cancel');
+        var appt = Store.get('appointments', id);
+        if (appt && confirm('Are you sure you want to cancel this appointment for ' + appt.patientName + '?')) {
+          Store.update('appointments', id, { status: 'Cancelled' });
+          UI.toast('Appointment cancelled.', 'info', 'Cancelled');
+          renderAll();
+        }
+      });
+    });
+
+    body.querySelectorAll('[data-resched]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = b.getAttribute('data-resched');
+        var appt = Store.get('appointments', id);
+        if (!appt) return;
+        activeReschedAppt = appt;
+        var rForm = document.getElementById('reschedule-form');
+        document.getElementById('resched-sub').textContent = 'Rescheduling visit for ' + appt.patientName;
+        var dateEl = document.getElementById('resched-date');
+        dateEl.min = Store.todayISO(0);
+        dateEl.value = appt.date;
+
+        var updateReschedSlots = function () {
+          document.getElementById('resched-time').innerHTML = slotOptions(appt.time, appt.doctorId, dateEl.value);
+        };
+        dateEl.onchange = updateReschedSlots;
+        updateReschedSlots();
+
+        UI.clearErrors(rForm);
+        UI.openModal('reschedule-modal');
+      });
+    });
+  }
+
+  var rForm = document.getElementById('reschedule-form');
+  if (rForm) {
+    rForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!UI.validate(rForm) || !activeReschedAppt) return;
+      var newDate = document.getElementById('resched-date').value;
+      var newTime = document.getElementById('resched-time').value;
+      if (!newTime) {
+        UI.toast('Please select a valid time slot.', 'error', 'Invalid slot');
+        return;
+      }
+      Store.update('appointments', activeReschedAppt.id, {
+        date: newDate,
+        time: newTime,
+        status: 'Scheduled'
+      });
+      UI.closeModal('reschedule-modal');
+      UI.toast('Appointment rescheduled successfully.', 'success', 'Rescheduled');
+      renderAll();
+    });
   }
 
   /* ---------- Review & Schedule modal ----------------------------------- */
@@ -94,13 +193,19 @@
     document.getElementById('sched-mrn').textContent = r.mrn || '';
     document.getElementById('sched-window').textContent = r.window;
     document.getElementById('sched-reason').textContent = r.reason;
-    document.getElementById('sched-preferred').textContent = UI.fmtDate(r.preferredDate) + ' • ' + r.window + ' • ' + r.type;
+    document.getElementById('sched-preferred').textContent = UI.fmtDate(r.preferredDate) + ' • ' + r.window;
     document.getElementById('sched-doctor').innerHTML = doctorOptions(r.doctorId);
-    document.getElementById('sched-type').value = r.type || 'In-person';
     var dateEl = document.getElementById('sched-date');
     dateEl.min = Store.todayISO(0);
     dateEl.value = r.preferredDate;
-    document.getElementById('sched-time').innerHTML = slotOptions(r.window === 'Afternoon' ? '13:00' : '09:00');
+    var updateSlots = function () {
+      var docId = document.getElementById('sched-doctor').value;
+      var dateVal = document.getElementById('sched-date').value;
+      document.getElementById('sched-time').innerHTML = slotOptions(r.window === 'Afternoon' ? '13:00' : '09:00', docId, dateVal);
+    };
+    document.getElementById('sched-doctor').onchange = updateSlots;
+    document.getElementById('sched-date').onchange = updateSlots;
+    updateSlots();
     UI.clearErrors(schedForm);
     UI.openModal('schedule-modal');
   }
@@ -115,7 +220,6 @@
       doctorId: doctor.id, doctorName: doctor.name,
       date: document.getElementById('sched-date').value,
       time: document.getElementById('sched-time').value,
-      type: document.getElementById('sched-type').value,
       reason: activeReq.reason, status: 'Scheduled'
     });
     Store.update('appointmentRequests', activeReq.id, { status: 'Scheduled' });

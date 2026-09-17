@@ -1,7 +1,7 @@
 {
   "name": "MediBridge — Clinical Coordination & Operations Platform",
   "short_name": "MediBridge",
-  "description": "Unified healthcare coordination platform connecting institutes, doctors, receptionists, and patients with smart scheduling and clinical governance.",
+  "description": "Unified healthcare coordination platform connecting clinics, doctors, receptionists, and patients with smart scheduling and clinical governance.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",
@@ -34,8 +34,8 @@
   ],
   "shortcuts": [
     {
-      "name": "Institute Operations",
-      "url": "/institute/operations",
+      "name": "Admin Operations",
+      "url": "/admin/operations",
       "description": "Access clinical command center and enrolled clinics"
     },
     {

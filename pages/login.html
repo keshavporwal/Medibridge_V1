@@ -46,8 +46,8 @@
           <div class="admin-banner hidden" id="admin-banner">
             <span class="material-symbols-outlined">shield_person</span>
             <div class="col">
-              <span class="admin-banner-title">Institute Administrator portal</span>
-              <span class="admin-banner-sub">Elevated access · restricted to institute admins</span>
+              <span class="admin-banner-title">Admin portal</span>
+              <span class="admin-banner-sub">Elevated access · restricted to admins</span>
             </div>
           </div>
 
@@ -69,7 +69,7 @@
             </div>
             <div class="field">
               <label class="field-label required" for="si-email">Email</label>
-              <input class="input" id="si-email" type="email" data-type="email" required placeholder="you@example.com" autocomplete="username" />
+              <input class="input" id="si-email" type="email" data-type="email" required placeholder="aarav.sharma@example.in" autocomplete="username" />
               <span class="field-error"></span>
             </div>
             <div class="field">
@@ -98,12 +98,12 @@
             </div>
             <div class="field">
               <label class="field-label required" for="rg-name">Full name</label>
-              <input class="input" id="rg-name" type="text" data-type="name" data-maxlen="80" required placeholder="Alex Rivera" />
+              <input class="input" id="rg-name" type="text" data-type="name" data-maxlen="80" required placeholder="Aarav Sharma" />
               <span class="field-error"></span>
             </div>
             <div class="field">
               <label class="field-label required" for="rg-email">Official email</label>
-              <input class="input" id="rg-email" type="email" data-type="email" required placeholder="you@example.com" />
+              <input class="input" id="rg-email" type="email" data-type="email" required placeholder="aarav.sharma@example.in" />
               <span class="field-error"></span>
             </div>
             <div class="field">
@@ -119,7 +119,7 @@
             <div class="field hidden" id="rg-clinic-field">
               <label class="field-label required" for="rg-clinic">Clinic code</label>
               <input class="input" id="rg-clinic" type="text" data-pattern="^CLN-[A-Za-z0-9]{4,6}$" data-pattern-flags="i" data-pattern-msg="Clinic code looks like CLN-AB12C." placeholder="e.g. CLN-AB12C" autocomplete="off" />
-              <span class="field-hint">Provided by your institute administrator to link you to your clinic.</span>
+              <span class="field-hint">Provided by your admin to link you to your clinic.</span>
               <span class="field-error"></span>
             </div>
             <button class="btn btn-primary btn-block" type="submit" style="margin-top:var(--space-sm)">
@@ -129,7 +129,7 @@
           </form>
 
           <div class="admin-link">
-            <a href="#" id="admin-portal">Institute Administrator? Sign in here &rarr;</a>
+            <a href="#" id="admin-portal">Admin? Sign in here &rarr;</a>
           </div>
         </div>
       </div>

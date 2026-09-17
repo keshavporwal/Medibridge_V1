@@ -19,9 +19,9 @@
       sub: 'Review appointment requests, match them to live doctor availability, and confirm visits in a single click.'
     },
     admin: {
-      img: 'img-admin', label: 'Administrator', badge: 'Institute Operations',
+      img: 'img-admin', label: 'Administrator', badge: 'Admin Operations',
       headline: 'Govern your clinical network with clarity and control.',
-      sub: 'Oversee enrolled clinics, staff onboarding, and aggregate patient volume across your institute.'
+      sub: 'Oversee enrolled clinics, staff onboarding, and aggregate patient volume across your clinics.'
     }
   };
 
@@ -66,7 +66,7 @@
     if (cf) cf.classList.toggle('hidden', !(role === 'doctor' || role === 'receptionist'));
   }
 
-  // Distinct treatment for the Institute Administrator portal.
+  // Distinct treatment for the Admin portal.
   function updateAdminMode(isAdmin) {
     els.loginCard.classList.toggle('admin-mode', isAdmin);
     els.adminBanner.classList.toggle('hidden', !isAdmin);
@@ -75,7 +75,7 @@
     els.signinTitle.textContent = isAdmin ? 'Administrator sign-in' : 'Welcome back';
     els.adminPortal.innerHTML = isAdmin
       ? '\u2190 Back to staff & patient sign-in'
-      : 'Institute Administrator? Sign in here \u2192';
+      : 'Admin? Sign in here \u2192';
   }
 
   function setMode(mode) {
@@ -111,7 +111,7 @@
   els.signinForm.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!UI.validate(els.signinForm)) return;
-    var res = Auth.login(els.siEmail.value.trim(), els.siPassword.value, state.role === 'admin' ? 'admin' : null);
+    var res = Auth.login(els.siEmail.value.trim(), els.siPassword.value, state.role);
     if (!res.ok) {
       UI.setError(res.error.toLowerCase().indexOf('password') > -1 ? els.siPassword : els.siEmail, res.error);
       UI.toast(res.error, 'error', 'Sign-in failed');

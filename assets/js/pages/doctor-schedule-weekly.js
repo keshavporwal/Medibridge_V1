@@ -30,7 +30,12 @@
     document.getElementById('week-label').textContent = UI.fmtDateShort(iso(weekStart)) + ' – ' + UI.fmtDateShort(iso(end));
     var week = Store.getAvailability(doctorId);
     var todayISO = Store.todayISO(0);
-    var rows = '';
+
+    // Time scale header (8 AM to 6 PM)
+    var timeHeader = '<div class="gantt-header-row"><span class="label-md muted">Day</span><div class="gantt-header-track" style="display:flex;justify-content:space-between;padding:0 var(--space-xs);font-size:11px;color:var(--muted)">' +
+      '<span>08:00</span><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span></div></div>';
+
+    var rows = timeHeader;
     for (var i = 0; i < 5; i++) {
       var d = addDays(weekStart, i);
       var dISO = iso(d);
@@ -47,10 +52,10 @@
       }
       myAppts(dISO).forEach(function (a) {
         var left = timeToPct(a.time);
-        bars += '<div class="gantt-bar ' + (a.type === 'Telehealth' ? 'tele' : '') + '" style="left:' + left + '%;width:6%" title="' + UI.esc(a.patientName + ' • ' + a.reason) + '">' + UI.esc(a.patientName.split(' ')[0]) + '</div>';
+        bars += '<div class="gantt-bar" style="left:' + left + '%;width:8%;background:var(--primary);color:#fff" title="' + UI.esc(a.patientName + ' • ' + a.reason) + '">' + UI.esc(a.patientName.split(' ')[0]) + '</div>';
       });
       rows += '<div class="gantt-row"><span class="label-md ' + (dISO === todayISO ? 'text-primary strong' : 'muted') + '">' + dayName + ' ' + d.getDate() + '</span>' +
-        '<div class="gantt-track">' + bars + '</div></div>';
+        '<div class="gantt-track" style="position:relative;background:var(--surface-container-low);border-radius:var(--radius-sm);overflow:hidden;height:36px">' + bars + '</div></div>';
     }
     document.getElementById('week-gantt').innerHTML = rows;
   }

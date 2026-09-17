@@ -1,4 +1,4 @@
-/* Institute Admin — Operations Command Center */
+/* Admin — Operations Command Center */
 (function () {
   'use strict';
   var session = Auth.requireAuth('admin');
@@ -156,42 +156,6 @@
     }).join('');
   }
 
-  /* ---------- Onboard modal --------------------------------------------- */
-  var obForm = document.getElementById('onboard-form');
-  document.getElementById('btn-onboard').addEventListener('click', function () {
-    if (!Store.all('clinics').length) { UI.toast('Enroll a clinic first, then onboard staff into it.', 'info', 'No clinics yet'); return; }
-    document.getElementById('ob-clinic').innerHTML = clinicOptions();
-    obForm.reset();
-    document.getElementById('ob-role').value = 'Doctor';
-    UI.clearErrors(obForm);
-    UI.openModal('onboard-modal');
-  });
-  UI.liveClear(obForm);
-  obForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!UI.validate(obForm)) return;
-    var email = document.getElementById('ob-email').value.trim();
-    if (Store.all('staff').some(function (s) { return s.email.toLowerCase() === email.toLowerCase(); })) {
-      UI.setError(document.getElementById('ob-email'), 'A staff member with this email already exists.');
-      return;
-    }
-    var role = document.getElementById('ob-role').value;
-    var clinicId = document.getElementById('ob-clinic').value;
-    var name = document.getElementById('ob-name').value.trim();
-    var staff = Store.insert('staff', {
-      name: name, email: email, clinicId: clinicId, role: role,
-      specialty: role === 'Doctor' ? Store.get('clinics', clinicId).specialty : 'Front Desk',
-      onboardDate: Store.todayISO(0), status: 'Active'
-    });
-    if (role === 'Doctor') {
-      Store.insert('doctors', { name: name, specialty: staff.specialty, clinicId: clinicId, status: 'Off Duty', nextSlot: 'Tomorrow 9:00 AM' });
-    }
-    var clinic = Store.get('clinics', clinicId);
-    Store.update('clinics', clinicId, { staffCount: (clinic.staffCount || 0) + 1 });
-    UI.closeModal('onboard-modal');
-    UI.toast(name + ' onboarded to ' + clinic.name + '.', 'success', 'Staff provisioned');
-    renderStaff(); renderKPIs(); renderClinicsQuick();
-  });
 
   /* ---------- Deboard modal --------------------------------------------- */
   var dbForm = document.getElementById('deboard-form');

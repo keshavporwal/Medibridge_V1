@@ -1,4 +1,4 @@
-/* Institute Admin — Clinics Directory */
+/* Admin — Clinics Directory */
 (function () {
   'use strict';
   var session = Auth.requireAuth('admin');
@@ -23,14 +23,45 @@
     } else { UI.toast('Clinic code: ' + code, 'info', 'Clinic code'); }
   }
 
+  var searchInput = document.getElementById('search-clinics');
+  var statusFilter = document.getElementById('status-filter');
+  var pageInfo = document.getElementById('page-info');
+  var btnPrev = document.getElementById('btn-prev');
+  var btnNext = document.getElementById('btn-next');
+
+  var currentPage = 1;
+  var pageSize = 5;
+
   function renderClinics() {
     var host = document.getElementById('clinics-body');
-    var clinics = Store.all('clinics');
-    if (!clinics.length) {
-      host.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="material-symbols-outlined">domain</span><p>No clinics yet. Enroll one to generate its clinic code.</p></div></td></tr>';
+    var term = (searchInput ? searchInput.value : '').trim().toLowerCase();
+    var filter = statusFilter ? statusFilter.value : 'all';
+
+    var clinics = Store.all('clinics').filter(function (c) {
+      var matchesSearch = !term || c.name.toLowerCase().indexOf(term) > -1 || (c.code || '').toLowerCase().indexOf(term) > -1;
+      var matchesFilter = filter === 'all' || c.status === filter;
+      return matchesSearch && matchesFilter;
+    });
+
+    var totalItems = clinics.length;
+    var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    var start = (currentPage - 1) * pageSize;
+    var pagedClinics = clinics.slice(start, start + pageSize);
+
+    if (pageInfo) {
+      pageInfo.textContent = totalItems ? 'Showing ' + (start + 1) + '–' + Math.min(start + pageSize, totalItems) + ' of ' + totalItems : 'Showing 0 of 0';
+    }
+    if (btnPrev) btnPrev.disabled = currentPage <= 1;
+    if (btnNext) btnNext.disabled = currentPage >= totalPages;
+
+    if (!pagedClinics.length) {
+      host.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="material-symbols-outlined">domain</span><p>' +
+        (term || filter !== 'all' ? 'No clinics match your filter.' : 'No clinics yet. Enroll one to generate its clinic code.') + '</p></div></td></tr>';
       return;
     }
-    host.innerHTML = clinics.map(function (c) {
+    host.innerHTML = pagedClinics.map(function (c) {
       return '<tr>' +
         '<td class="cell-title">' + UI.esc(c.name) + '</td>' +
         '<td>' + UI.esc(c.specialty) + '</td>' +
@@ -44,6 +75,11 @@
       b.addEventListener('click', function () { copyCode(b.getAttribute('data-code')); });
     });
   }
+
+  if (searchInput) searchInput.addEventListener('input', function () { currentPage = 1; renderClinics(); });
+  if (statusFilter) statusFilter.addEventListener('change', function () { currentPage = 1; renderClinics(); });
+  if (btnPrev) btnPrev.addEventListener('click', function () { if (currentPage > 1) { currentPage--; renderClinics(); } });
+  if (btnNext) btnNext.addEventListener('click', function () { currentPage++; renderClinics(); });
 
   var form = document.getElementById('enroll-form');
   document.getElementById('btn-enroll').addEventListener('click', function () {

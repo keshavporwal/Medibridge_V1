@@ -79,7 +79,6 @@
     }).join('');
     document.getElementById('req-date').min = Store.todayISO(0);
     document.getElementById('req-date').value = Store.todayISO(1);
-    document.getElementById('req-type').value = 'In-person';
     document.getElementById('req-window').value = 'Morning';
     document.getElementById('req-reason').value = '';
     document.getElementById('req-notes').value = '';
@@ -97,7 +96,6 @@
       doctorId: doctor.id, doctorName: doctor.name,
       preferredDate: document.getElementById('req-date').value,
       window: document.getElementById('req-window').value,
-      type: document.getElementById('req-type').value,
       reason: document.getElementById('req-reason').value.trim(),
       notes: document.getElementById('req-notes').value.trim(),
       status: 'Pending', createdAt: Date.now()

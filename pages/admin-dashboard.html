@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Institute Operations — MediBridge</title>
+  <title>Admin Operations — MediBridge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
       <div class="row">
         <a class="brand" href="admin-dashboard.html">
           <span class="brand-mark"><span class="material-symbols-outlined">health_and_safety</span></span>
-          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Institute Operations</span></span>
+          <span class="col"><span class="brand-name">MediBridge</span><span class="brand-tag">Admin Operations</span></span>
         </a>
       </div>
       <div class="nav-actions">
@@ -42,7 +42,6 @@
           <p class="page-subtitle">Network governance, staff roster, and patient volume.</p>
         </div>
         <div class="row gap-sm">
-          <button class="btn btn-secondary" id="btn-onboard"><span class="material-symbols-outlined">person_add</span>Onboard Staff</button>
           <a class="btn btn-primary" href="admin-clinics.html"><span class="material-symbols-outlined">domain_add</span>Manage Clinics</a>
         </div>
       </div>
@@ -112,51 +111,6 @@
     </main>
   </div>
 
-  <!-- ===== Onboard Staff modal ===== -->
-  <div class="modal-overlay" id="onboard-modal">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ob-title">
-      <div class="modal-header">
-        <div>
-          <h2 class="modal-title" id="ob-title">Onboard Staff Member</h2>
-          <p class="modal-desc">Provisions role credentials and assigns a clinic.</p>
-        </div>
-        <button class="modal-close" data-close aria-label="Close"><span class="material-symbols-outlined">close</span></button>
-      </div>
-      <form id="onboard-form" novalidate>
-        <div class="modal-body">
-          <div class="field">
-            <label class="field-label required" for="ob-name">Full legal name</label>
-            <input class="input" id="ob-name" type="text" data-type="name" data-maxlen="80" required placeholder="Dr. Sarah Jenkins" />
-            <span class="field-error"></span>
-          </div>
-          <div class="field">
-            <label class="field-label required" for="ob-email">Institutional email</label>
-            <input class="input" id="ob-email" type="email" data-type="email" required placeholder="s.jenkins@medibridge.health" />
-            <span class="field-error"></span>
-          </div>
-          <div class="form-grid">
-            <div class="field">
-              <label class="field-label required" for="ob-clinic">Assigned clinic</label>
-              <select class="select" id="ob-clinic" required></select>
-            </div>
-            <div class="field">
-              <label class="field-label required" for="ob-role">Role designation</label>
-              <select class="select" id="ob-role" required>
-                <option value="Doctor" selected>Doctor</option>
-                <option value="Receptionist">Receptionist</option>
-                <option value="Nurse">Nurse</option>
-              </select>
-            </div>
-          </div>
-          <p class="required-note">Required fields</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-close>Cancel</button>
-          <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined">how_to_reg</span><span>Onboard &amp; provision</span></button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- ===== Deboard Staff modal ===== -->
   <div class="modal-overlay" id="deboard-modal">
@@ -175,7 +129,7 @@
         <div class="modal-body">
           <div class="notice notice-warning" style="margin-bottom:var(--space-base)">
             <span class="material-symbols-outlined">warning</span>
-            <p class="body-sm">You are about to offboard <span class="strong" id="db-name">this staff member</span>. This immediately revokes institutional access.</p>
+            <p class="body-sm">You are about to offboard <span class="strong" id="db-name">this staff member</span>. This immediately revokes access.</p>
           </div>
           <div class="field">
             <label class="field-label required" for="db-reassign">Reassign open consultations to</label>

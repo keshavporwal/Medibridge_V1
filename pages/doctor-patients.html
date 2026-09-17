@@ -46,10 +46,15 @@
       </div>
 
       <div class="card">
-        <div class="card-header">
+        <div class="card-header row-between wrap gap-md">
           <span class="card-title">All Patients</span>
-          <div class="input-group" style="max-width:280px">
-            <input class="input" id="search" type="search" placeholder="Search name or MRN" aria-label="Search patients" />
+          <div class="row gap-sm wrap">
+            <input class="input" id="search" type="search" placeholder="Search patient name or MRN (e.g. Aarav)" aria-label="Search patients" style="max-width:240px" />
+            <select class="select" id="allergy-filter" style="max-width:160px">
+              <option value="all" selected>All Allergies</option>
+              <option value="has_allergies">Has Allergies</option>
+              <option value="no_allergies">No Allergies</option>
+            </select>
           </div>
         </div>
         <div class="table-wrap">
@@ -57,6 +62,13 @@
             <thead><tr><th>Patient</th><th>MRN</th><th>Date of birth</th><th>Allergies</th><th></th></tr></thead>
             <tbody id="patients-body"></tbody>
           </table>
+        </div>
+        <div class="card-footer row-between" id="pagination-controls" style="padding:var(--space-md)">
+          <span class="body-sm muted" id="page-info">Showing 0 of 0</span>
+          <div class="row gap-xs">
+            <button class="btn btn-ghost btn-sm" id="btn-prev" disabled>Previous</button>
+            <button class="btn btn-ghost btn-sm" id="btn-next" disabled>Next</button>
+          </div>
         </div>
       </div>
     </main>

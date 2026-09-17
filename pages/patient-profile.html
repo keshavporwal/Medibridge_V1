@@ -85,18 +85,32 @@
         <div class="span-5 card">
           <div class="card-header"><span class="card-title">Contact &amp; medical info</span></div>
           <form id="profile-form" novalidate>
+            <div class="grid grid-cols-2 gap-sm">
+              <div class="field">
+                <label class="field-label required" for="pf-country-code">Country code</label>
+                <input class="input" id="pf-country-code" type="text" required data-pattern="^\+?[0-9]{1,4}$" data-pattern-msg="Format e.g. +91" placeholder="+91" />
+                <span class="field-error"></span>
+              </div>
+              <div class="field">
+                <label class="field-label required" for="pf-phone">Contact phone</label>
+                <input class="input" id="pf-phone" type="tel" data-type="phone" required placeholder="98765 43210" />
+                <span class="field-error"></span>
+              </div>
+            </div>
             <div class="field">
-              <label class="field-label required" for="pf-phone">Contact phone</label>
-              <input class="input" id="pf-phone" type="tel" data-type="phone" required placeholder="(415) 555-0100" />
+              <label class="field-label required" for="pf-dob">Date of birth</label>
+              <input class="input" id="pf-dob" type="date" required />
               <span class="field-error"></span>
             </div>
             <div class="field">
               <label class="field-label" for="pf-allergies">Known allergies</label>
-              <input class="input" id="pf-allergies" type="text" data-maxlen="120" placeholder="e.g. Penicillin, Latex" />
+              <input class="input" id="pf-allergies" type="text" data-maxlen="120" placeholder="e.g. Penicillin, Dust allergy" />
+              <span class="field-error"></span>
             </div>
             <div class="field">
               <label class="field-label" for="pf-alerts">Care alerts</label>
-              <input class="input" id="pf-alerts" type="text" data-maxlen="120" placeholder="e.g. Hypertension watch" />
+              <input class="input" id="pf-alerts" type="text" data-maxlen="120" placeholder="e.g. Hypertension, Diabetes Type 2" />
+              <span class="field-error"></span>
             </div>
             <p class="required-note">Required fields</p>
             <button class="btn btn-primary btn-block" type="submit" style="margin-top:var(--space-sm)"><span class="material-symbols-outlined">save</span>Save changes</button>

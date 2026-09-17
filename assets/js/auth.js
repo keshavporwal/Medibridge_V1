@@ -35,12 +35,30 @@
     });
     if (!user) return { ok: false, error: 'No account found for that email.' };
     if (user.password !== password) return { ok: false, error: 'Incorrect password. Please try again.' };
-    if (expectedRole && expectedRole !== 'admin' && user.role === 'admin') {
-      return { ok: false, error: 'Use the administrator portal to sign in.' };
+
+    if (expectedRole) {
+      if (expectedRole === 'admin' && user.role !== 'admin') {
+        return { ok: false, error: 'This portal is for admins only.' };
+      }
+      if (expectedRole !== 'admin' && user.role === 'admin') {
+        return { ok: false, error: 'Use the administrator portal to sign in.' };
+      }
+      if (user.role !== expectedRole) {
+        return { ok: false, error: 'Invalid credentials for ' + expectedRole + ' role.' };
+      }
     }
-    if (expectedRole === 'admin' && user.role !== 'admin') {
-      return { ok: false, error: 'This portal is for institute administrators only.' };
+
+    // Check if account or staff member is revoked/inactive
+    if (user.status === 'Inactive' || user.status === 'Revoked' || user.status === 'Deboarded') {
+      return { ok: false, error: 'Your account access has been revoked by an administrator.' };
     }
+    var staffRecord = Store.all('staff').find(function (s) {
+      return s.email.toLowerCase() === user.email.toLowerCase();
+    });
+    if (staffRecord && (staffRecord.status === 'Inactive' || staffRecord.status === 'Revoked' || staffRecord.status === 'Deboarded')) {
+      return { ok: false, error: 'Your account access has been revoked by an administrator.' };
+    }
+
     return { ok: true, user: user };
   }
 
